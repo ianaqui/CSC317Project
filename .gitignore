@@ -1,0 +1,27 @@
+**/.grade/
+
+**/quizzes/
+
+
+# macOS
+.DS_Store
+
+# node.js
+node_modules/
+package-lock.json
+
+# Logs
+logs/
+
+# Temporary files
+tmp/
+*.tmp
+
+# IDE specific files
+.idea/
+.vscode/
+
+
+# Env files 
+# Ignore all .env files everywhere
+**/.env
