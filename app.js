@@ -74,14 +74,14 @@ app.locals.helpers = {
 
 // Session configuration
 let sessionConfig = {
-  secret: process.env.SESSION_SECRET,
-  resave: false,
-  saveUninitialized: false,
+  secret: process.env.SESSION_SECRET || 'fallback-secret-for-development',
+  resave: true, // Changed to true to ensure session is saved
+  saveUninitialized: true, // Changed to true to create session for all users
   cookie: {
     maxAge: 1000 * 60 * 60 * 24, // 1 day
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: process.env.NODE_ENV === 'production' ? 'lax' : 'strict'
+    secure: false, // Disabled secure requirement temporarily
+    sameSite: 'lax' // Always use lax which works better in most environments
   }
 };
 
@@ -89,16 +89,36 @@ let sessionConfig = {
 // If you want to try using MongoDB store, uncomment this:
 try {
   if (process.env.MONGODB_URI) {
+    // Create the session store with more reliable options
     sessionConfig.store = MongoStore.create({ 
       mongoUrl: process.env.MONGODB_URI,
       ttl: 14 * 24 * 60 * 60, // = 14 days session expiry
       autoRemove: 'native',
-      touchAfter: 24 * 3600, // time period in seconds between session updates
+      touchAfter: 60, // Update session every minute
       crypto: {
         secret: false // disable encryption
-      }
+      },
+      // Add error logging for any session store issues
+      collectionName: 'sessions', // Use explicit collection name
+      stringify: false, // Don't stringify session data (more reliable)
     });
-    console.log('MongoDB session store configured');
+    
+    // Add event listeners to the session store to debug connection issues
+    const store = sessionConfig.store;
+    
+    store.on('create', (sessionId) => {
+      console.log('New session created:', sessionId);
+    });
+    
+    store.on('touch', (sessionId) => {
+      console.log('Session touched:', sessionId);
+    });
+    
+    store.on('error', (error) => {
+      console.error('Session store error:', error);
+    });
+    
+    console.log('MongoDB session store configured with debug logging');
   } else {
     console.log('Using memory session store (not recommended for production)');
   }

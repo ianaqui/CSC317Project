@@ -75,9 +75,12 @@ exports.getLogin = (req, res) => {
  */
 exports.postLogin = async (req, res, next) => {
   try {
+    console.log('Login attempted for email:', req.body.email);
+    
     // Check for validation errors
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
+      console.log('Validation errors:', errors.array());
       return res.status(400).render('auth/login', {
         title: 'Login',
         errors: errors.array(),
@@ -89,9 +92,11 @@ exports.postLogin = async (req, res, next) => {
 
     // Find user by email
     const user = await User.findOne({ email: req.body.email });
+    console.log('User found in database:', !!user);
     
     // Check if user exists
     if (!user) {
+      console.log('User not found in database');
       return res.status(401).render('auth/login', {
         title: 'Login',
         errors: [{ msg: 'Invalid email or password' }],
@@ -103,7 +108,10 @@ exports.postLogin = async (req, res, next) => {
     
     // Check password
     const isPasswordValid = await user.comparePassword(req.body.password);
+    console.log('Password valid:', isPasswordValid);
+    
     if (!isPasswordValid) {
+      console.log('Invalid password');
       return res.status(401).render('auth/login', {
         title: 'Login',
         errors: [{ msg: 'Invalid email or password' }],
@@ -120,12 +128,25 @@ exports.postLogin = async (req, res, next) => {
       email: user.email
     };
     
-    // Redirect to originally requested URL or profile page
-    const redirectUrl = req.session.returnTo || '/user/profile';
-    delete req.session.returnTo;
-    
-    res.redirect(redirectUrl);
+    // Save session explicitly to ensure it's stored
+    req.session.save(err => {
+      if (err) {
+        console.error('Session save error:', err);
+        return next(err);
+      }
+      
+      console.log('Session saved successfully. User is now authenticated.');
+      console.log('Session data:', req.session);
+      
+      // Redirect to originally requested URL or profile page
+      const redirectUrl = req.session.returnTo || '/user/profile';
+      delete req.session.returnTo;
+      
+      console.log('Redirecting to:', redirectUrl);
+      res.redirect(redirectUrl);
+    });
   } catch (error) {
+    console.error('Login error:', error);
     next(error);
   }
 };

@@ -5,13 +5,21 @@
 
 // Middleware to check if user is authenticated
 exports.isAuthenticated = (req, res, next) => {
-  if (req.session.user) {
+  console.log('Session check - session exists:', !!req.session);
+  console.log('Session check - user in session:', !!req.session.user);
+  console.log('Current session:', req.session);
+  
+  if (req.session && req.session.user) {
+    console.log('User is authenticated, proceeding to next middleware');
     // User is authenticated, proceed to the next middleware
     return next();
   }
   
+  console.log('User is not authenticated, redirecting to login');
   // User is not authenticated, redirect to login page
-  req.session.returnTo = req.originalUrl; // Store the URL they were trying to access
+  if (req.session) {
+    req.session.returnTo = req.originalUrl; // Store the URL they were trying to access
+  }
   res.redirect('/auth/login');
 };
 
