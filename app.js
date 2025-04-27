@@ -109,14 +109,39 @@ try {
 
 app.use(session(sessionConfig));
 
-// CSRF protection temporarily disabled
+// CSRF protection configuration
 try {
-  app.use(csrf({ cookie: false }));  // Using session instead of cookie
+  // More reliable CSRF configuration that works in production
+  const csrfProtection = csrf({
+    cookie: {
+      key: '_csrf',
+      path: '/',
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: process.env.NODE_ENV === 'production' ? 'lax' : 'strict',
+      maxAge: 3600 // 1 hour
+    }
+  });
+  
+  // Apply CSRF protection to all routes that need it
+  app.use((req, res, next) => {
+    // Skip CSRF for API routes if you have any
+    if (req.path.startsWith('/api/')) {
+      next();
+    } else {
+      csrfProtection(req, res, next);
+    }
+  });
 
   // Set local variables for templates including CSRF token
   app.use((req, res, next) => {
     try {
-      res.locals.csrfToken = req.csrfToken();
+      // Only set token if CSRF is active on this route
+      if (req.csrfToken) {
+        res.locals.csrfToken = req.csrfToken();
+      } else {
+        res.locals.csrfToken = 'csrf-not-required-for-this-route';
+      }
     } catch (err) {
       console.error('Error generating CSRF token:', err);
       // Provide a dummy token to prevent template errors
