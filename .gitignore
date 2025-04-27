@@ -25,3 +25,6 @@ tmp/
 # Env files 
 # Ignore all .env files everywhere
 **/.env
+  
+
+CLAUDE.md
