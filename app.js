@@ -109,44 +109,17 @@ try {
 
 app.use(session(sessionConfig));
 
-// CSRF protection configuration
+// Simple and reliable CSRF protection
 try {
-  // More reliable CSRF configuration that works in production
-  const csrfProtection = csrf({
-    cookie: {
-      key: '_csrf',
-      path: '/',
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: process.env.NODE_ENV === 'production' ? 'lax' : 'strict',
-      maxAge: 3600 // 1 hour
-    }
-  });
+  // Use the most basic CSRF setup that works reliably
+  const csrfMiddleware = csrf();
   
-  // Apply CSRF protection to all routes that need it
-  app.use((req, res, next) => {
-    // Skip CSRF for API routes if you have any
-    if (req.path.startsWith('/api/')) {
-      next();
-    } else {
-      csrfProtection(req, res, next);
-    }
-  });
+  // Apply CSRF protection
+  app.use(csrfMiddleware);
 
-  // Set local variables for templates including CSRF token
+  // Set CSRF token as local variable for all templates
   app.use((req, res, next) => {
-    try {
-      // Only set token if CSRF is active on this route
-      if (req.csrfToken) {
-        res.locals.csrfToken = req.csrfToken();
-      } else {
-        res.locals.csrfToken = 'csrf-not-required-for-this-route';
-      }
-    } catch (err) {
-      console.error('Error generating CSRF token:', err);
-      // Provide a dummy token to prevent template errors
-      res.locals.csrfToken = 'dummy-csrf-token-error-occurred';
-    }
+    res.locals.csrfToken = req.csrfToken();
     next();
   });
 } catch (err) {
