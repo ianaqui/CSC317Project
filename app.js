@@ -109,27 +109,15 @@ try {
 
 app.use(session(sessionConfig));
 
-// Simple and reliable CSRF protection
-try {
-  // Use the most basic CSRF setup that works reliably
-  const csrfMiddleware = csrf();
-  
-  // Apply CSRF protection
-  app.use(csrfMiddleware);
+// CSRF protection disabled temporarily
+console.log('CSRF protection is currently disabled');
 
-  // Set CSRF token as local variable for all templates
-  app.use((req, res, next) => {
-    res.locals.csrfToken = req.csrfToken();
-    next();
-  });
-} catch (err) {
-  console.error('Error setting up CSRF protection:', err);
-  // Fallback middleware to prevent application crash
-  app.use((req, res, next) => {
-    res.locals.csrfToken = 'csrf-disabled-error-occurred';
-    next();
-  });
-}
+// Set a dummy CSRF token for templates
+app.use((req, res, next) => {
+  // Provide a dummy token so templates don't break
+  res.locals.csrfToken = 'csrf-protection-disabled';
+  next();
+});
 
 // Our custom locals middleware
 app.use(setLocals);
