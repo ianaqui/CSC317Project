@@ -1,23 +1,32 @@
 # CSC317 Project Setup Instructions
 
 This guide will walk you through setting up the CSC317 project environment, including:
-- Cloning the repository
+- Forking the repository
 - Setting up MongoDB locally and remotely 
 - Creating a .env file for environment variables
 - Setting up a project on Render.com connected to your GitHub repository
 
-## 1. Clone the Repository
+## 1. Fork the Repository
 
-First, you'll need to clone the starter app repository:
+First, you'll need to fork the starter app repository:
 
-```bash
-# Navigate to your desired directory
-git clone git@github.com:goleador/CSC317Project.git
-cd CSC317Project
+1. **Navigate to the original repository**:
+   - Go to [https://github.com/goleador/CSC317Project](https://github.com/goleador/CSC317Project)
+   
+2. **Fork the repository**:
+   - Click the "Fork" button in the top-right corner of the page
+   - This creates your own copy of the repository under your GitHub account
 
-# Install dependencies
-npm install
-```
+3. **Clone your forked repository to your local machine**:
+   ```bash
+   # Navigate to your desired directory
+   git clone https://github.com/YOUR-USERNAME/CSC317Project.git
+   cd CSC317Project
+
+   # Install dependencies
+   npm install
+   ```
+   (Replace YOUR-USERNAME with your actual GitHub username)
 
 ## 2. Set Up MongoDB
 
