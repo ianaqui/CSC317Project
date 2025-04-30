@@ -37,7 +37,8 @@ exports.postRegister = async (req, res, next) => {
     const user = new User({
       username: req.body.username,
       email: req.body.email,
-      password: req.body.password
+      password: req.body.password,
+      hasProfileImage: false
     });
 
     // Save user to database
@@ -125,7 +126,8 @@ exports.postLogin = async (req, res, next) => {
     req.session.user = {
       id: user._id,
       username: user.username,
-      email: user.email
+      email: user.email,
+      hasProfileImage: user.hasProfileImage
     };
     
     // Save session explicitly to ensure it's stored

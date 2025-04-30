@@ -21,4 +21,10 @@ router.get('/settings', userController.getSettings);
 // POST /user/settings - Update user settings
 router.post('/settings', userController.updateSettings);
 
+// GET /user/profile-image - Get current user's profile image
+router.get('/profile-image', userController.getProfileImage);
+
+// GET /user/profile-image/:userId - Get any user's profile image by ID
+router.get('/profile-image/:userId', userController.getUserProfileImage);
+
 module.exports = router;

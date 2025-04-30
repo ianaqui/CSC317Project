@@ -7,8 +7,12 @@
     <div class="profile-card">
       <div class="profile-header">
         <div class="profile-avatar">
-          <!-- Display first letter of username as avatar -->
-          <span><%= user.username.charAt(0) %></span>
+          <% if (user.hasProfileImage) { %>
+            <img src="/user/profile-image" alt="Profile picture">
+          <% } else { %>
+            <!-- Display first letter of username as avatar -->
+            <span><%= user.username.charAt(0) %></span>
+          <% } %>
         </div>
         <div class="profile-title">
           <h2><%= user.username %></h2>
