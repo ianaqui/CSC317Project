@@ -1,184 +1,93 @@
-# CSC317 Assignment 5: Group Web Application Project
+# Recipe Sharing Platform
 
-## Overview
+A web application that allows users to create, share, and discover recipes with detailed time and cost information. Built with Express.js, MongoDB, and JavaScript.
 
-For this assignment, you will work in groups of 3-4 students to develop a complete web application using HTML, CSS, and JavaScript with Express.js for the backend. This project will allow you to apply all the skills you've learned throughout the course in a collaborative setting.
+## Features
 
-## Timeline and Deliverables
+* Full user authentication system (registration, login, profile management)
+* Create, edit, view, and delete recipes (CRUD operations)
+* Detailed recipe information including:
+   * Preparation and cooking time
+   * Estimated cost
+   * Ingredients list with quantities
+   * Step-by-step instructions
+* Advanced recipe filtering:
+   * Filter by meal type (breakfast, lunch, dinner, etc.)
+   * Filter by cost range
+   * Filter by preparation time
+   * Filter by dietary restrictions (vegetarian, vegan, etc.)
+* Search functionality for finding recipes
+* Dietary restriction tags (dairy-free, gluten-free, nut-free)
+* Responsive UI optimized for all devices
+* Form validation (both client and server side)
 
-You have 4 weeks to complete this project with the following key deliverables:
+## Recipe Features
 
-1. **Week 1: Ideation and Proposal**
-   - Deliverable: README.md describing the project, features, and team responsibilities
+### Creating Recipes
+Users can create recipes with:
+* Title and description
+* Detailed ingredients list with quantities
+* Step-by-step instructions
+* Preparation and cooking time
+* Estimated cost
+* Category and meal type
+* Dietary restriction flags
 
-2. **Week 2: Alpha Version**
-   - Deliverable: First functional prototype demonstrating core features
+### Searching & Filtering
+The platform offers several ways to find recipes:
+* Search by keyword
+* Filter by cost (budget-friendly to premium)
+* Filter by time (quick meals to elaborate preparations)
+* Filter by dietary restrictions
+* Filter by meal type (vegetarian, vegan, meat-based)
 
-3. **Week 3: Beta Version**
-   - Deliverable: Refined application with most features implemented
+### Recipe Management
+Authenticated users can:
+* Create new recipes
+* Edit their own recipes
+* Delete their own recipes
+* View all recipes in the system
+* Save favorite recipes
 
-4. **Week 4: Final Version (V1)**
-   - Deliverable: Complete, polished application ready for submission
+## Team Responsibilities
 
-5. **Demo**
-   - Deliverable: 5-minute Zoom recording demonstrating your application
-   - Each team member must speak for at least 1 minute
+### Adrian Aquino: Database and Recipe Model Implementation
+* Set up GitHub repository and project structure
+* Configure MongoDB connection (local and Atlas)
+* Set up Render.com deployment environment
+* Create Recipe model with all required fields
+* Implement data validation rules
+* Create sample recipe data for testing
+* Develop database queries for recipe filtering
 
-## Project Requirements
+### Student 2: Recipe Routes and Controllers
+* Develop recipe routes and endpoints
+* Create recipeController with CRUD functions
+* Implement search and filter functionality
+* Connect recipe operations with authentication
+* Create server-side validation for recipe inputs
+* Develop error handling for recipe operations
+* Test API endpoints and functionality
 
-Your web application must include:
+### Student 3: Recipe Views and CSS
+* Create recipe listing and detail page templates
+* Design recipe creation and editing forms
+* Implement responsive layout for all pages
+* Create consistent recipe card design
+* Develop filter and search UI components
+* Style dietary restriction indicators
+* Ensure mobile-friendly design and usability
 
-1. **Frontend**
-   - Responsive HTML/CSS layout
-   - Client-side form validation
-   - Interactive UI elements using JavaScript
-   - Consistent design system and typography
+### Student 4: Client-side JavaScript and Interactions
+* Implement client-side form validation
+* Create dynamic ingredient form fields (add/remove)
+* Develop interactive filter components
+* Build client-side search functionality
+* Create form submission handling
+* Implement responsive menu behavior
+* Develop client-side error handling and feedback
 
-2. **Backend (Express.js)**
-   - RESTful API endpoints
-   - Data persistence (file-based or database)
-   - Error handling
-   - Authentication (optional)
+## Acknowledgments
 
-3. **Full-Stack Features**
-   - CRUD operations
-   - Input validation (both client and server side)
-   - At least one complex feature unique to your project
-
-## Project Ideas
-
-Choose one of the following project ideas or propose your own (with instructor approval):
-
-1. **Recipe Sharing Platform**
-
-Entities: User, Recipe
-Minimal Features:
-Create recipe (title, description, instructions, ingredients)
-View all recipes
-View single recipe
-(Optional) Tag recipes, like recipes
-
-2. **Task Management System**
-
-Entities: User, Task, (optional: Project/List)
-Minimal Features:
-Create task (title, status)
-View/edit/delete tasks
-(Optional) Assign to user, add due date
-
-3. **Twitter Clone**
-
-Entities: User, Tweet/Post
-Minimal Features:
-Create post (text, timestamp)
-View feed
-(Optional) Like/retweet, reply
-
-4. **Local Event Finder**
-
-Entities: User, Event
-Minimal Features:
-Create event (title, datetime, location)
-View all events
-(Optional) RSVP feature
-
-5. **Fitness Tracker**
-
-Entities: User, Exercise/Entry
-Minimal Features:
-Log workout (type, duration, date)
-View log history
-
-6. **Book/Movie Review Site**
-
-Entities: User, Book/Movie, Review
-Minimal Features:
-Add book/movie
-Add review (rating, comment)
-View reviews
-
-7. **Budget Planner**
-
-Entities: User, Expense/Income
-Minimal Features:
-Add expense/income (amount, date, category)
-View summary/list
-
-9. **Digital Notebook/Wiki**
-
-Entities: User, Note/Page
-Minimal Features:
-Create/edit note (title, content)
-View notes
-
-10. **Interactive Visualization Tool**
-
-Entities: User, Dataset/Chart
-Minimal Features:
-Upload data or input directly
-Render a basic chart (bar/line)
-
-Feel free to adapt these ideas or propose something entirely different that interests your team!
-
-## Directory Structure
-
-Your project must follow this directory structure:
-
-```
-assignments/
-└── assignment-5/
-    ├── app.js
-    ├── package.json
-    ├── public/
-    │   ├── css/
-    │   ├── js/
-    │   └── images/
-    ├── routes/
-    │   └── api/
-    ├── views/
-    ├── middleware/
-    ├── models/
-    ├── config/
-    ├── utils/
-    └── README.md
-```
-
-## Grading Criteria
-
-Your project will be evaluated on:
-
-1. **Functionality (40%)**
-   - All features work as described
-   - No major bugs or errors
-   - Proper error handling
-
-2. **Code Quality (25%)**
-   - Well-structured and organized code
-   - Proper comments and documentation
-   - Follows best practices
-
-3. **Design and User Experience (20%)**
-   - Visual appeal and consistency
-   - Intuitive navigation and interface
-   - Responsive design
-
-4. **Presentation and Documentation (15%)**
-   - Clear and engaging demo
-   - Comprehensive README
-   - Equal contribution from all team members
-
-## Important Notes
-
-- **Individual Contribution**: All team members must contribute code. Zero code contribution will result in no credit for that student.
-- **Version Control**: Use Git for collaboration and maintain a clear commit history.
-- **Progress Updates**: Weekly check-ins will be required to ensure steady progress.
-- **Technology Stack**: You may use additional libraries with instructor approval, but the core must be HTML, CSS, JavaScript, and Express.js.
-
-## Submission Guidelines
-
-1. Push your code to GitHub under the specified directory structure
-2. Submit your repository link through the class portal
-3. Upload your demo video to the designated platform
-4. Include a contribution.md file detailing each member's contributions
-
-Good luck with your projects! This is your opportunity to showcase all you've learned throughout the course while gaining valuable collaborative development experience.
+* Built with Express.js, MongoDB, and JavaScript
+* Inspired by recipe site made by SparkPeople
