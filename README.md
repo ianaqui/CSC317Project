@@ -51,47 +51,42 @@ Authenticated users can:
 * View all recipes in the system
 * Save favorite recipes
 
-## Complex Feature: Multi-criteria Recipe Filtering System
+## Complex Feature: Recipe Filtering System
 Our application includes a sophisticated filtering system that allows users to combine multiple criteria (cost, time, dietary restrictions, and meal type) to find exactly the recipes they need. This feature includes real-time updates of search results as filters are applied, creating a seamless user experience.
 
 ## Team Responsibilities
 
-### Adrian Aquino: Backend - Database and Model Implementation
+### Adrian Aquino: Backend - Database Implementation
 * **Backend Features:**
-  * Set up MongoDB database connection (local and cloud)
-  * Create Recipe model with proper validation rules
-  * Implement database query methods for recipe filtering
-  * Configure data persistence and relationships between models
-  * Set up error handling for database operations
+  * Configure MongoDB database connection (local and cloud)
+  * Create Recipe model with all required fields and validation
+  * Implement data persistence for recipes and user data
+  * Develop database queries for cost and time filtering
+  * Design database schema for recipe-user relationships
 
-### Student 2: Backend - API Development
+### Student 2: Backend - API and Authentication
 * **Backend Features:**
-  * Develop RESTful API endpoints for recipes
-  * Create recipe controller with CRUD functionality
-  * Implement server-side validation for inputs
-  * Set up authentication for protected routes
-  * Build cost and time filtering logic
-  * Develop meal category classification system
+  * Create RESTful API endpoints for all recipe operations
+  * Develop recipe controller with complete CRUD functions
+  * Implement server-side validation for all user inputs
+  * Set up authentication and authorization for secure routes
+  * Create error handling middleware for API responses
 
-### Student 3: Frontend - UI Design and Implementation
+### Student 3: Frontend - Design and Layout
 * **Frontend Features:**
-  * Create responsive HTML/CSS layout for all pages
-  * Design recipe cards and detail views
-  * Implement consistent typography and design system
-  * Build mobile-friendly navigation
-  * Style dietary restriction indicators
-  * Create visual hierarchy for recipe information
+  * Design responsive HTML/CSS layout for all application pages
+  * Create consistent design system with typography and colors
+  * Build recipe cards and detailed view templates
+  * Implement mobile-friendly navigation and interface
+  * Design dietary restriction tag visual system
 
-### Student 4: Frontend and Full-Stack Integration
+### Student 4: Frontend - Interactivity and Integration
 * **Frontend Features:**
-  * Implement client-side form validation
-  * Create interactive UI elements with JavaScript
-  * Build dynamic ingredient management interface
-* **Full-Stack Features:**
-  * Connect frontend and backend for CRUD operations
-  * Implement dual-layer validation (client and server)
-  * Create multi-criteria filtering interface
-  * Develop search functionality across the application
+  * Implement client-side form validation for all inputs
+  * Create interactive filter and search components
+  * Build dynamic ingredient form with add/remove functionality
+  * Develop responsive menu and user interface behaviors
+  * Connect frontend forms with backend API endpoints
 
 ## Acknowledgments
 
