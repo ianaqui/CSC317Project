@@ -1,6 +1,8 @@
 # Recipe Sharing Platform
 
-A web application that allows users to create, share, and discover recipes with detailed time and cost information. Built with Express.js, MongoDB, and JavaScript.
+A web application that allows users to create, share, and discover recipes with detailed time and cost information. Built with Express.js, MongoDB, and JavaScript. 
+
+Visit our live site: [https://csc317-group-k.onrender.com](https://csc317-group-k.onrender.com)
 
 ## Features
 
@@ -49,43 +51,47 @@ Authenticated users can:
 * View all recipes in the system
 * Save favorite recipes
 
+## Complex Feature: Multi-criteria Recipe Filtering System
+Our application includes a sophisticated filtering system that allows users to combine multiple criteria (cost, time, dietary restrictions, and meal type) to find exactly the recipes they need. This feature includes real-time updates of search results as filters are applied, creating a seamless user experience.
+
 ## Team Responsibilities
 
-### Adrian Aquino: Database and Recipe Model Implementation
-* Set up GitHub repository and project structure
-* Configure MongoDB connection (local and Atlas)
-* Set up Render.com deployment environment
-* Create Recipe model with all required fields
-* Implement data validation rules
-* Create sample recipe data for testing
-* Develop database queries for recipe filtering
+### Adrian Aquino: Backend - Database and Model Implementation
+* **Backend Features:**
+  * Set up MongoDB database connection (local and cloud)
+  * Create Recipe model with proper validation rules
+  * Implement database query methods for recipe filtering
+  * Configure data persistence and relationships between models
+  * Set up error handling for database operations
 
-### Student 2: Recipe Routes and Controllers
-* Develop recipe routes and endpoints
-* Create recipeController with CRUD functions
-* Implement search and filter functionality
-* Connect recipe operations with authentication
-* Create server-side validation for recipe inputs
-* Develop error handling for recipe operations
-* Test API endpoints and functionality
+### Student 2: Backend - API Development
+* **Backend Features:**
+  * Develop RESTful API endpoints for recipes
+  * Create recipe controller with CRUD functionality
+  * Implement server-side validation for inputs
+  * Set up authentication for protected routes
+  * Build cost and time filtering logic
+  * Develop meal category classification system
 
-### Student 3: Recipe Views and CSS
-* Create recipe listing and detail page templates
-* Design recipe creation and editing forms
-* Implement responsive layout for all pages
-* Create consistent recipe card design
-* Develop filter and search UI components
-* Style dietary restriction indicators
-* Ensure mobile-friendly design and usability
+### Student 3: Frontend - UI Design and Implementation
+* **Frontend Features:**
+  * Create responsive HTML/CSS layout for all pages
+  * Design recipe cards and detail views
+  * Implement consistent typography and design system
+  * Build mobile-friendly navigation
+  * Style dietary restriction indicators
+  * Create visual hierarchy for recipe information
 
-### Student 4: Client-side JavaScript and Interactions
-* Implement client-side form validation
-* Create dynamic ingredient form fields (add/remove)
-* Develop interactive filter components
-* Build client-side search functionality
-* Create form submission handling
-* Implement responsive menu behavior
-* Develop client-side error handling and feedback
+### Student 4: Frontend and Full-Stack Integration
+* **Frontend Features:**
+  * Implement client-side form validation
+  * Create interactive UI elements with JavaScript
+  * Build dynamic ingredient management interface
+* **Full-Stack Features:**
+  * Connect frontend and backend for CRUD operations
+  * Implement dual-layer validation (client and server)
+  * Create multi-criteria filtering interface
+  * Develop search functionality across the application
 
 ## Acknowledgments
 
