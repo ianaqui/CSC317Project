@@ -38,4 +38,24 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     });
   });
+
+// ---- Features boxes added by Emma ------
+
+const cards = document.querySelectorAll(".feature-card");
+  if (cards.length === 3) {
+    let index = 0;
+
+    setInterval(() => {
+      cards.forEach(card => card.classList.remove("active", "next", "prev"));
+
+      cards[index].classList.add("active");
+      cards[(index + 1) % 3].classList.add("next");
+      cards[(index + 2) % 3].classList.add("prev");
+
+      index = (index + 1) % 3;
+    }, 3000);
+  }
+
+
+
 });
