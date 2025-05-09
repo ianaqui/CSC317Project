@@ -5,6 +5,13 @@
     <h1><%= message %></h1>
     <p>Create, discover, and share recipes 🍽️</p>
     <p>Filter recipes by budget, prep time, and dietry needs.</p>
+
+    <!-- Search bar -->
+    <form class="search-bar">
+      <input type="text" placeholder="Search for recipes..." name="query" />
+      <button type="submit">Search</button>
+    </form>
+    
     
     <% if (isAuthenticated) { %>
       <div class="action-buttons">
