@@ -1,0 +1,76 @@
+<%# 
+ * Recipe Detail Page Template
+ * Author: Lakshya
+ * Purpose: Displays detailed information about a recipe including image, ingredients,
+ *          instructions, and video tutorial. Uses TheMealDB API data.
+%>
+
+<%- include('./partials/header') %>
+
+<div class="recipe-detail-section">
+  <div class="container">
+    <div class="recipe-detail">
+      <div class="recipe-header">
+        <div class="recipe-image">
+          <img src="<%= recipe.strMealThumb %>" alt="<%= recipe.strMeal %>">
+        </div>
+        <div class="recipe-info">
+          <h1><%= recipe.strMeal %></h1>
+          <div class="recipe-meta">
+            <span class="category"><%= recipe.strCategory %></span>
+            <span class="area"><%= recipe.strArea %></span>
+            <span class="price">$<%= price %></span>
+          </div>
+          <% if (recipe.strTags) { %>
+            <div class="recipe-tags">
+              <% recipe.strTags.split(',').forEach(tag => { %>
+                <span class="tag"><%= tag.trim() %></span>
+              <% }); %>
+            </div>
+          <% } %>
+        </div>
+      </div>
+
+      <div class="recipe-content">
+        <div class="recipe-ingredients">
+          <h2>Ingredients</h2>
+          <ul>
+            <% for(let i = 1; i <= 20; i++) { %>
+              <% if(recipe[`strIngredient${i}`] && recipe[`strIngredient${i}`].trim() !== '') { %>
+                <li>
+                  <span class="measure"><%= recipe[`strMeasure${i}`] %></span>
+                  <span class="ingredient"><%= recipe[`strIngredient${i}`] %></span>
+                </li>
+              <% } %>
+            <% } %>
+          </ul>
+        </div>
+
+        <div class="recipe-instructions">
+          <h2>Instructions</h2>
+          <div class="instructions-text">
+            <%= recipe.strInstructions.split('\n').map(paragraph => 
+              paragraph.trim() ? `<p>${paragraph}</p>` : ''
+            ).join('') %>
+          </div>
+        </div>
+
+        <% if (recipe.strYoutube) { %>
+          <div class="recipe-video">
+            <h2>Video Tutorial</h2>
+            <div class="video-container">
+              <iframe 
+                src="<%= recipe.strYoutube.replace('watch?v=', 'embed/') %>" 
+                frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+              </iframe>
+            </div>
+          </div>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('./partials/footer') %> 

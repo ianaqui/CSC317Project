@@ -1,39 +1,280 @@
 <%- include('./partials/header') %>
 
-<div class="container">
-  <div class="welcome-section">
-    <h1><%= message %></h1>
-    <p>A simple authentication system for web applications</p>
-    
-    <% if (isAuthenticated) { %>
-      <div class="action-buttons">
-        <a href="/user/profile" class="btn primary-btn">View Profile</a>
-      </div>
-    <% } else { %>
-      <div class="action-buttons">
-        <a href="/auth/login" class="btn primary-btn">Login</a>
-        <a href="/auth/register" class="btn secondary-btn">Register</a>
-      </div>
-    <% } %>
-  </div>
+<div class="welcome-section">
+  <h1><%= message %></h1>
+  <p>Create, discover, and share recipes 🍽️</p>
+  <p>Filter recipes by budget, prep time, and dietry needs.</p>
   
-  <div class="features-section">
+  <% if (isAuthenticated) { %>
+    <div class="action-buttons">
+      <a href="/user/profile" class="btn primary-btn">View Profile</a>
+    </div>
+  <% } else { %>
+    <div class="action-buttons">
+      <a href="/auth/login" class="btn primary-btn">Login</a>
+      <a href="/auth/register" class="btn secondary-btn">Register</a>
+    </div>
+  <% } %>
+</div>
+
+<div class="featured-recipes-section">
+  <div class="container">
+    <h2>Featured Recipes</h2>
+    <div class="recipes-grid" id="recipes-grid">
+      <div id="loading-spinner" class="loading-spinner">Loading recipes...</div>
+    </div>
+  </div>
+</div>
+
+<div class="pantry-section">
+  <div class="container">
+    <h2>Your Pantry</h2>
+    <div class="pantry-filters">
+      <div class="filter-group">
+        <h3>Price Range</h3>
+        <div class="price-range">
+          <div class="range-input">
+            <label for="min-price">Min Price ($)</label>
+            <input type="number" id="min-price" min="0" max="100" value="0">
+          </div>
+          <div class="range-input">
+            <label for="max-price">Max Price ($)</label>
+            <input type="number" id="max-price" min="0" max="100" value="100">
+          </div>
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <h3>Preparation Time</h3>
+        <div class="prep-time-filters">
+          <label class="filter-option">
+            <input type="checkbox" name="prep-time" value="quick">
+            <span>Quick Meals (< 30 min)</span>
+          </label>
+          <label class="filter-option">
+            <input type="checkbox" name="prep-time" value="medium">
+            <span>Medium (< 1 hour)</span>
+          </label>
+          <label class="filter-option">
+            <input type="checkbox" name="prep-time" value="long">
+            <span>Long (> 1 hour)</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <h3>Dietary Needs</h3>
+        <div class="dietary-filters">
+          <label class="filter-option">
+            <input type="checkbox" name="dietary" value="vegetarian">
+            <span>Vegetarian</span>
+          </label>
+          <label class="filter-option">
+            <input type="checkbox" name="dietary" value="vegan">
+            <span>Vegan</span>
+          </label>
+          <label class="filter-option">
+            <input type="checkbox" name="dietary" value="gluten-free">
+            <span>Gluten Free</span>
+          </label>
+          <label class="filter-option">
+            <input type="checkbox" name="dietary" value="dairy-free">
+            <span>Dairy Free</span>
+          </label>
+          <label class="filter-option">
+            <input type="checkbox" name="dietary" value="nut-free">
+            <span>Nut Free</span>
+          </label>
+        </div>
+      </div>
+
+      <button class="btn primary-btn" id="apply-filters">Apply Filters</button>
+    </div>
+
+    <div class="filtered-recipes-grid" id="filtered-recipes-grid">
+      <!-- Filtered recipes will be displayed here -->
+    </div>
+    <div id="pagination">
+      <!-- Pagination controls will be displayed here -->
+    </div>
+  </div>
+</div>
+
+<div class="features-section">
+  <div class="container">
     <h2>Features</h2>
-    <div class="feature-grid">
-      <div class="feature-card">
-        <h3>User Authentication</h3>
-        <p>Secure login and registration with password hashing</p>
+    <div class="feature-carousel">
+      <div class="feature-card active">
+        <h3>Create 🍓</h3>
+        <p>Create recipes to share with others</p>
       </div>
-      <div class="feature-card">
-        <h3>Session Management</h3>
-        <p>Persistent sessions with secure cookies</p>
+      <div class="feature-card next">
+        <h3>Browse 🧅</h3>
+        <p>Browse recipes shared by others</p>
       </div>
-      <div class="feature-card">
-        <h3>Protected Routes</h3>
-        <p>Restrict access to authenticated users only</p>
+      <div class="feature-card prev">
+        <h3>Filter 🌶️</h3>
+        <p>Filter recipes to suit your budget, prep time, and dietary needs</p>
       </div>
     </div>
   </div>
 </div>
 
 <%- include('./partials/footer') %>
+
+<script>
+  // Fetch featured recipes from TheMealDB
+  async function fetchFeaturedRecipes() {
+    const recipesGrid = document.getElementById('recipes-grid');
+    const loadingSpinner = document.getElementById('loading-spinner');
+    
+    try {
+      // Fetch 8 random recipes
+      const recipes = [];
+      for (let i = 0; i < 8; i++) {
+        const response = await fetch('https://www.themealdb.com/api/json/v1/1/random.php');
+        const data = await response.json();
+        recipes.push(data.meals[0]);
+      }
+      
+      // Clear loading spinner
+      loadingSpinner.style.display = 'none';
+      
+      // Populate the grid with recipe cards
+      recipesGrid.innerHTML = recipes.map(recipe => createRecipeCard(recipe)).join('');
+    } catch (error) {
+      console.error('Error fetching recipes:', error);
+      loadingSpinner.style.display = 'none';
+      recipesGrid.innerHTML = '<p class="error-message">Failed to load recipes. Please try again later.</p>';
+    }
+  }
+
+  function createRecipeCard(meal) {
+    // Generate a random price between $5 and $25
+    const price = (Math.random() * 20 + 5).toFixed(2);
+    const tags = meal.strTags ? meal.strTags.split(',').slice(0, 2) : [];
+    
+    return `
+      <a href="/recipe/${meal.idMeal}" class="recipe-card">
+        <div class="recipe-image">
+          <img src="${meal.strMealThumb}" alt="${meal.strMeal}">
+        </div>
+        <div class="recipe-info">
+          <h3>${meal.strMeal}</h3>
+          <div class="recipe-meta">
+            <p class="recipe-price">$${price}</p>
+            <div class="recipe-category">
+              ${tags.map(tag => `<span>${tag.trim()}</span>`).join('')}
+            </div>
+          </div>
+        </div>
+      </a>
+    `;
+  }
+
+  // Pantry functionality
+  let currentPage = 1;
+  const recipesPerPage = 8;
+  let allRecipes = [];
+  let filteredRecipes = [];
+
+  async function fetchPantryRecipes() {
+    try {
+      const recipes = [];
+      for (let i = 0; i < 50; i++) {
+        const response = await fetch('https://www.themealdb.com/api/json/v1/1/random.php');
+        const data = await response.json();
+        recipes.push(data.meals[0]);
+      }
+      allRecipes = recipes;
+      filteredRecipes = recipes;
+      displayPantryRecipes();
+    } catch (error) {
+      console.error('Error fetching recipes:', error);
+      document.getElementById('filtered-recipes-grid').innerHTML = 
+        '<p class="error-message">Failed to load recipes. Please try again later.</p>';
+    }
+  }
+
+  function applyFilters() {
+    const minPrice = parseFloat(document.getElementById('min-price').value) || 0;
+    const maxPrice = parseFloat(document.getElementById('max-price').value) || 100;
+    
+    const prepTimeFilters = Array.from(document.querySelectorAll('input[name="prep-time"]:checked'))
+      .map(input => input.value);
+    
+    const dietaryFilters = Array.from(document.querySelectorAll('input[name="dietary"]:checked'))
+      .map(input => input.value);
+
+    // Filter recipes
+    filteredRecipes = allRecipes.filter(recipe => {
+      const price = (Math.random() * 20 + 5).toFixed(2);
+      if (price < minPrice || price > maxPrice) return false;
+
+      if (prepTimeFilters.length > 0) {
+        const prepTime = recipe.strTags ? recipe.strTags.toLowerCase() : '';
+        if (!prepTimeFilters.some(filter => prepTime.includes(filter))) return false;
+      }
+
+      if (dietaryFilters.length > 0) {
+        const tags = recipe.strTags ? recipe.strTags.toLowerCase() : '';
+        if (!dietaryFilters.some(filter => tags.includes(filter))) return false;
+      }
+
+      return true;
+    });
+
+    currentPage = 1;
+    displayPantryRecipes();
+  }
+
+  function displayPantryRecipes() {
+    const startIndex = (currentPage - 1) * recipesPerPage;
+    const endIndex = startIndex + recipesPerPage;
+    const recipesToShow = filteredRecipes.slice(startIndex, endIndex);
+    
+    const recipesGrid = document.getElementById('filtered-recipes-grid');
+    recipesGrid.innerHTML = recipesToShow.map(recipe => createRecipeCard(recipe)).join('');
+    
+    updatePagination();
+  }
+
+  function updatePagination() {
+    const totalPages = Math.ceil(filteredRecipes.length / recipesPerPage);
+    const paginationContainer = document.getElementById('pagination');
+    
+    let paginationHTML = `
+      <div class="pagination">
+        <button class="pagination-btn" 
+                ${currentPage === 1 ? 'disabled' : ''} 
+                onclick="changePage(${currentPage - 1})">
+          Previous
+        </button>
+        <span class="page-info">Page ${currentPage} of ${totalPages}</span>
+        <button class="pagination-btn" 
+                ${currentPage === totalPages ? 'disabled' : ''} 
+                onclick="changePage(${currentPage + 1})">
+          Next
+        </button>
+      </div>
+    `;
+    
+    paginationContainer.innerHTML = paginationHTML;
+  }
+
+  function changePage(newPage) {
+    if (newPage < 1 || newPage > Math.ceil(filteredRecipes.length / recipesPerPage)) return;
+    currentPage = newPage;
+    displayPantryRecipes();
+    window.scrollTo({ top: document.getElementById('filtered-recipes-grid').offsetTop - 100, behavior: 'smooth' });
+  }
+
+  // Initialize both featured recipes and pantry
+  document.addEventListener('DOMContentLoaded', () => {
+    fetchFeaturedRecipes();
+    fetchPantryRecipes();
+    document.getElementById('apply-filters').addEventListener('click', applyFilters);
+  });
+</script>
+
+<script src="/js/pantry.js"></script>

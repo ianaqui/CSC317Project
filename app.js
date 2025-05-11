@@ -18,6 +18,7 @@ const csrf = require('csurf');
 const indexRoutes = require('./routes/index');
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/user');
+const recipeRoutes = require('./routes/recipe');
 
 // Import custom middleware
 const { setLocals } = require('./middlewares/locals');
@@ -146,12 +147,13 @@ app.use(setLocals);
 app.use('/', indexRoutes);
 app.use('/auth', authRoutes);
 app.use('/user', userRoutes);
+app.use('/recipe', recipeRoutes);
 
 // Error handling middleware
 app.use(handleErrors);
 
 // Start server
-const PORT = process.env.PORT || 3000;
+const PORT = 3001;
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });

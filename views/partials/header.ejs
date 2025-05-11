@@ -3,28 +3,33 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><%= title %> | Authentication Template</title>
+  <title><%= title %> | PantryPal </title>
   <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <script src="/js/search.js" defer></script>
 </head>
 <body>
   <header>
     <nav class="navbar">
-      <div class="logo">
-        <a href="/">Auth Template</a>
-      </div>
       <ul class="nav-links">
         <li><a href="/" class="<%= path === '/' ? 'active' : '' %>">Home</a></li>
         <li><a href="/about" class="<%= path === '/about' ? 'active' : '' %>">About</a></li>
-        
-        <% if (isAuthenticated) { %>
-          <li><a href="/user/profile" class="<%= path === '/user/profile' ? 'active' : '' %>">Profile</a></li>
-          <li><a href="/user/settings" class="<%= path === '/user/settings' ? 'active' : '' %>">Settings</a></li>
-          <li><a href="/auth/logout">Logout</a></li>
-        <% } else { %>
-          <li><a href="/auth/login" class="<%= path === '/auth/login' ? 'active' : '' %>">Login</a></li>
-          <li><a href="/auth/register" class="<%= path === '/auth/register' ? 'active' : '' %>">Register</a></li>
-        <% } %>
       </ul>
+
+      <div class="logo">
+        <a href="/" class="logo-link">
+          <span class="logo-text">PantryPal</span>
+          <img src="/images/basket.png" alt="Logo" class="logo-img">
+        </a>
+      </div>
+
+      <div class="navbar-search">
+        <input type="text" id="search-input" placeholder="Search recipes...">
+        <button type="button" id="search-button">
+          <i class="fas fa-search"></i>
+        </button>
+        <div id="search-results" class="search-results-dropdown"></div>
+      </div>
     </nav>
   </header>
 
