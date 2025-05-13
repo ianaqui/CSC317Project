@@ -58,6 +58,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
+//added by emma - for put
+const methodOverride = require('method-override');
+app.use(methodOverride('_method'));
+
 // Set up EJS view engine
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));

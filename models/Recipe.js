@@ -34,7 +34,7 @@ const RecipeSchema = new mongoose.Schema({
         },
         quantity: {
             type: String,
-            required: true,
+            required: false, //changed to false (emma)
             trim: true
         }
     }],

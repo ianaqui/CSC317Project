@@ -598,6 +598,7 @@ input:focus {
   box-shadow: var(--shadow);
   padding: 2rem;
   margin-bottom: 2rem;
+  margin: 12rem auto 3rem auto;
 }
 
 .profile-header {
@@ -675,6 +676,18 @@ input:focus {
   padding-left: 1.5rem;
   margin: 1rem 0;
 }
+
+.add-recipe-link {
+  display: inline-block;
+  margin-bottom: 2rem;
+}
+
+.add-recipe-box {
+  margin-bottom: 2rem;
+  padding-left: 2rem; 
+  padding-bottom: 0.2rem;
+}
+
 
 /* 
  * Error Page 
@@ -1732,4 +1745,125 @@ details pre {
     padding: 0.4rem 0.8rem;
   }
 }
+
+/*recipe form - emma */
+
+.recipe-form-container {
+  margin-top: 160px; 
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 2rem;
+  background-color: var(--white);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+}
+
+
+.recipe-form-container h1 {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: var(--primary-color);
+}
+
+.recipe-form-container form .form-group {
+  margin-bottom:1.5rem;
+}
+
+.recipe-form-container label {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.recipe-form-container input,
+.recipe-form-container textarea,
+.recipe-form-container select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 1rem;
+  background-color: var(--background-color);
+}
+
+.recipe-form-container .form-actions {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.dietary-box {
+  background-color: var(--white);
+  padding: 1.5rem;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  margin-top: 1.5rem;
+  box-shadow: var(--shadow);
+  max-width: 500px;
+  background-color: var(--background-color);
+}
+
+.dietary-box legend {
+  margin-bottom: 0.5rem;
+}
+
+.dietary-box label {
+  display: block;
+  margin: 0.4rem 0;
+}
+
+.create-recipe-btn {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--background-color) 0.3s ease;
+}
+
+.create-recipe-btn:hover {
+  background-color: var(--primary-dark);
+}
+
+@media (max-width: 600px) {
+  .recipe-form-container {
+    padding-top: 300px;
+  }
+}
+
+/* user recipes page */
+
+.user-recipe-detail {
+  max-width: 800px;
+  margin: 12rem auto 3rem auto;
+  padding: 2rem;
+  background-color: var(--white);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+}
+
+@media (max-width: 600px) {
+  .user-recipe-detail {
+    margin: 6rem 1rem 2rem 1rem;
+    padding: 1.5rem;
+  }
+
+  .user-recipe-detail h1,
+  .user-recipe-detail h2,
+  .user-recipe-detail p,
+  .user-recipe-detail li,
+  .user-recipe-detail span {
+    font-size: 1rem; /* or slightly smaller if things feel too tight */
+  }
+
+  .user-recipe-detail .btn {
+    display: block;
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+}
+
+
 /* End of Recipe Detail Page Styles */

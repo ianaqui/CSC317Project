@@ -8,6 +8,12 @@
 const express = require('express');
 const router = express.Router();
 
+//added by emma
+const { isAuthenticated } = require('../middlewares/auth');
+const recipeController = require('../controllers/recipeController');
+//up to here
+
+
 router.get('/:id', async (req, res) => {
   try {
     const response = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${req.params.id}`);
@@ -38,5 +44,10 @@ router.get('/:id', async (req, res) => {
     });
   }
 });
+
+//added by emma
+router.post('/', isAuthenticated, recipeController.createRecipe);
+router.put('/:id', isAuthenticated, recipeController.updateRecipe);
+
 
 module.exports = router; 

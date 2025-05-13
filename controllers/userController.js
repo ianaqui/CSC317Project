@@ -5,19 +5,29 @@
 const User = require('../models/User');
 const Image = require('../models/Image');
 const upload = require('../middlewares/upload');
+const Recipe = require('../models/Recipe'); // added by emma - for users recipes
+
 
 /**
  * Display user profile page
  */
-exports.getProfile = (req, res) => {
+exports.getProfile = async (req, res, next) => {
+  try {
   // Add hasProfileImage flag to user object
   const user = {...req.session.user};
   user.hasProfileImage = user.hasProfileImage || false;
+
+  //recipes created by user - emma
+  const recipes = await Recipe.find({ createdBy: user.id }). sort({ createdAt: -1 });
   
   res.render('user/profile', {
     title: 'Profile',
-    user: user
+    user: user,
+    recipes: recipes
   });
+} catch (err) {
+  next (err);
+}
 };
 
 /**
@@ -179,6 +189,22 @@ exports.getUserProfileImage = async (req, res, next) => {
     // Set the content type header and send the image data
     res.set('Content-Type', image.contentType);
     res.send(image.data);
+  } catch (error) {
+    next(error);
+  }
+};
+
+
+// recipe creation form 
+
+exports.getRecipeCreationForm = async (req, res, next) => {
+  try {
+    res.render('user/recipe-form', {
+      title: 'Create New Recipe',
+      user: req.session.user,
+      recipe: null,
+      errors: []
+    });
   } catch (error) {
     next(error);
   }

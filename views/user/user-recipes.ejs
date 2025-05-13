@@ -1,0 +1,60 @@
+//adding recipes (emma)
+
+<%- include('../partials/header') %>
+
+  <div class="user-recipe-detail">
+    <h1>
+      <%= recipe.title %>
+    </h1>
+    <p><strong>Description:</strong>
+      <%= recipe.description %>
+    </p>
+
+    <h2>Ingredients</h2>
+    <ul>
+      <% recipe.ingredients.forEach(ing=> { %>
+        <li>
+          <%= ing.quantity %> - <%= ing.name %>
+        </li>
+        <% }) %>
+    </ul>
+
+    <h2>Instructions</h2>
+    <ol>
+      <% recipe.instructions.forEach(step=> { %>
+        <li>
+          <%= step %>
+        </li>
+        <% }) %>
+    </ol>
+
+    <p><strong>Prep Time:</strong>
+      <%= recipe.prepTime %> minutes
+    </p>
+    <p><strong>Cook Time:</strong>
+      <%= recipe.cookTime %> minutes
+    </p>
+    <p><strong>Total Time:</strong>
+      <%= recipe.prepTime + recipe.cookTime %> minutes
+    </p>
+    <p><strong>Cost:</strong> $<%= recipe.estimatedCost.toFixed(2) %>
+    </p>
+    <p><strong>Category:</strong>
+      <%= recipe.category %>
+    </p>
+
+    <p><strong>Dietary Tags:</strong>
+      <% for (const tag in recipe.dietaryRestrictions) { %>
+        <% if (recipe.dietaryRestrictions[tag]) { %>
+          <span>
+            <%= tag %>
+          </span>
+          <% } %>
+            <% } %>
+    </p>
+
+    <a href="/user/recipes/<%= recipe._id %>/edit" class="btn">✏️ Edit Recipe</a>
+    <a href="/user/profile" class="btn">← Back to Profile</a>
+  </div>
+
+  <%- include('../partials/footer') %>
