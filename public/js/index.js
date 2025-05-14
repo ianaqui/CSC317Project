@@ -26,8 +26,8 @@ async function fetchFeaturedRecipes() {
 
         // Fetch TheMealDB recipes
         const externalRecipes = [];
-        for (let i = 0; i < 4; i++) {
-            try {
+        try {
+            for (let i = 0; i < 4; i++) {
                 const mealResponse = await fetch('https://www.themealdb.com/api/json/v1/1/random.php');
                 const mealData = await mealResponse.json();
                 if (mealData.meals && mealData.meals.length > 0) {
@@ -37,10 +37,10 @@ async function fetchFeaturedRecipes() {
                     mealData.meals[0].price = (Math.random() * 20 + 5).toFixed(2);
                     externalRecipes.push(mealData.meals[0]);
                 }
-            } catch (apiErr) {
-                console.error('Error fetching external recipe:', apiErr);
-                // Continue with other recipes if one fails
             }
+        } catch (apiErr) {
+            console.error('Error fetching external recipes:', apiErr);
+            // Continue with MongoDB recipes if TheMealDB API fails
         }
 
         // Combine the recipes

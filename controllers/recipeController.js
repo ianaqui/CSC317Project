@@ -43,7 +43,8 @@ exports.getExternalRecipe = async (req, res, next) => {
     res.render('recipe-external', {
       recipe: data.meals[0],
       price: price,
-      title: data.meals[0].strMeal
+      title: data.meals[0].strMeal,
+      isAuthenticated: !!req.session.user
     });
   } catch (error) {
     console.error('Error fetching external recipe:', error);
@@ -81,7 +82,8 @@ exports.getUserRecipe = async (req, res, next) => {
     res.render('recipe', {
       recipe: recipe,
       price: recipe.estimatedCost.toFixed(2),
-      title: recipe.title
+      title: recipe.title,
+      isAuthenticated: !!req.session.user
     });
   } catch (error) {
     console.error('Error fetching recipe:', error);

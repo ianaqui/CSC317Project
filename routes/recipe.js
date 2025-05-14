@@ -1,17 +1,21 @@
 /**
+ * Recipe Routes
+ * Author: Lakshya, Adrian Aquino
+ * Purpose: Handles recipe-related routes, including fetching individual recipe details
+ *          from TheMealDB API and rendering the recipe detail page.
  *
- * @author - Lakshya, Adrian Aquino
- * @file recipe.js - Recipe related routes
  *
  * 5/13/25 - Modified by Adrian Aquino, MongoDB API endpoints
- * 5/14/25 - Modified by Adrian Aquino, Added route for recipe deletion
- * 5/14/25 - Modified by Adrian Aquino, Separated TheMealDB routes from MongoDB routes
+ * 5/14/25 - Modified by Adrian Aquino, Added route for recipe deletion,
+ * Separated TheMealDB routes from MongoDB routes
+ *
  */
 
 const express = require('express');
 const router = express.Router();
 const { isAuthenticated } = require('../middlewares/auth');
 const recipeController = require('../controllers/recipeController');
+const Recipe = require('../models/Recipe');
 
 /**
  *
@@ -19,7 +23,13 @@ const recipeController = require('../controllers/recipeController');
  * These routes handle fetching and displaying recipes from TheMealDB API
  *
  */
+// IMPORTANT: This route must come BEFORE the /:id route
 router.get('/external/:id', recipeController.getExternalRecipe);
+
+// Recipe routes below are for mongodb user created recipes
+
+// Get recipe image
+router.get('/:id/image', recipeController.getRecipeImage);
 
 /**
  *
@@ -39,9 +49,6 @@ router.put('/:id', isAuthenticated, recipeController.updateRecipe);
 
 // Delete a recipe (requires authentication)
 router.delete('/:id', isAuthenticated, recipeController.deleteRecipe);
-
-// Get recipe image
-router.get('/:id/image', recipeController.getRecipeImage);
 
 /**
  *
