@@ -7,6 +7,7 @@
  * 04/26/25 - Added dietary restrictions and cost fields
  * 04/28/25 - Added indexing for better query performance
  * 05/13/25 - Added text and dietary restriction indexes for search
+ * 05/14/25 - Added hasImage field
  *
  */
 const mongoose = require('mongoose');
@@ -65,6 +66,10 @@ const RecipeSchema = new mongoose.Schema({
         glutenFree: { type: Boolean, default: false },
         dairyFree: { type: Boolean, default: false },
         nutFree: { type: Boolean, default: false }
+    },
+    hasImage: {
+        type: Boolean,
+        default: false
     },
     createdBy: {
         type: mongoose.Schema.Types.ObjectId,
