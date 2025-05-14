@@ -1,4 +1,13 @@
 /**
+ *
+ * @author - Adrian Aquino
+ * @file app.js - Main application entry point
+ *
+ * 5/14/25 - Modified by Adrian Aquino, enabled CSRF protection
+ *
+ */
+
+/**
  * Main application entry point
  * This file sets up our Express server, middleware, and routes
  */
@@ -43,11 +52,11 @@ if (process.env.MONGODB_URI) {
   };
 
   mongoose.connect(process.env.MONGODB_URI, mongooseOptions)
-    .then(() => console.log('MongoDB connected successfully'))
-    .catch(err => {
-      console.error('MongoDB connection error:', err);
-      console.log('Continuing without MongoDB. Some features may not work.');
-    });
+      .then(() => console.log('MongoDB connected successfully'))
+      .catch(err => {
+        console.error('MongoDB connection error:', err);
+        console.log('Continuing without MongoDB. Some features may not work.');
+      });
 } else {
   console.log('No MONGODB_URI found in environment. Continuing without database connection.');
   console.log('Please set up your MongoDB connection in the .env file to enable authentication features.');
@@ -95,7 +104,7 @@ let sessionConfig = {
 try {
   if (process.env.MONGODB_URI) {
     // Create the session store with more reliable options
-    sessionConfig.store = MongoStore.create({ 
+    sessionConfig.store = MongoStore.create({
       mongoUrl: process.env.MONGODB_URI,
       ttl: 14 * 24 * 60 * 60, // = 14 days session expiry
       autoRemove: 'native',
@@ -107,22 +116,22 @@ try {
       collectionName: 'sessions', // Use explicit collection name
       stringify: false, // Don't stringify session data (more reliable)
     });
-    
+
     // Add event listeners to the session store to debug connection issues
     const store = sessionConfig.store;
-    
+
     store.on('create', (sessionId) => {
       console.log('New session created:', sessionId);
     });
-    
+
     store.on('touch', (sessionId) => {
       console.log('Session touched:', sessionId);
     });
-    
+
     store.on('error', (error) => {
       console.error('Session store error:', error);
     });
-    
+
     console.log('MongoDB session store configured with debug logging');
   } else {
     console.log('Using memory session store (not recommended for production)');
@@ -134,15 +143,17 @@ try {
 
 app.use(session(sessionConfig));
 
-// CSRF protection disabled temporarily
-console.log('CSRF protection is currently disabled');
+// CSRF protection
+const csrfProtection = csrf({ cookie: false });
+app.use(csrfProtection);
 
-// Set a dummy CSRF token for templates
+// Set CSRF token for templates
 app.use((req, res, next) => {
-  // Provide a dummy token so templates don't break
-  res.locals.csrfToken = 'csrf-protection-disabled';
+  res.locals.csrfToken = req.csrfToken();
   next();
 });
+
+console.log('CSRF protection is enabled');
 
 // Our custom locals middleware
 app.use(setLocals);
