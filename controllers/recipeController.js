@@ -3,8 +3,8 @@
  * @author - Emma Wright, Adrian Aquino
  * @file recipeController.js - Recipe search function
  *
- * 5/13/25 - Added search function
- *
+ * 5/13/25 - Modified by Adrian Aquino, added search function
+ * 5/14/25 - Modified by Adrian Aquino, added recipe deletion
  */
 
 //creating a recipe (emma)
@@ -149,5 +149,28 @@ exports.searchRecipes = async (req, res, next) => {
   } catch (err) {
     console.error('Error searching recipes:', err);
     res.status(500).json({ error: 'Failed to search recipes' });
+  }
+};
+
+exports.deleteRecipe = async (req, res, next) => {
+  try {
+    const recipe = await Recipe.findById(req.params.id);
+
+    // Check if recipe exists and belongs to the current user
+    if (!recipe || recipe.createdBy.toString() !== req.session.user.id) {
+      return res.status(403).send('Access denied: You cannot delete recipes you did not create');
+    }
+
+    // Delete the recipe
+    await Recipe.findByIdAndDelete(req.params.id);
+
+    // Delete any associated images
+    await RecipeImage.deleteMany({ recipeId: req.params.id });
+
+    // Redirect to profile
+    res.redirect('/user/profile');
+  } catch (err) {
+    console.error('Error deleting recipe:', err);
+    next(err);
   }
 };

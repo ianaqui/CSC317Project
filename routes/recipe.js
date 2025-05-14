@@ -1,11 +1,12 @@
 /**
  * Recipe Routes
- * Author: Lakshya
+ * Author: Lakshya, Adrian Aquino
  * Purpose: Handles recipe-related routes, including fetching individual recipe details
  *          from TheMealDB API and rendering the recipe detail page.
  *
  *
  * 5/13/25 - Modified by Adrian Aquino, MongoDB API endpoints
+ * 5/14/25 - Modified by Adrian Aquino, Added route for recipe deletion
  */
 
 const express = require('express');
@@ -60,6 +61,8 @@ module.exports = router;
 
 // Recipe search API
 router.get('/api/search', recipeController.searchRecipes);
+// Delete recipe
+router.delete('/:id', isAuthenticated, recipeController.deleteRecipe);
 
 /**
  *
