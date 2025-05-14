@@ -6,6 +6,7 @@
  * 04/23/25 - Initial implementation
  * 04/26/25 - Added dietary restrictions and cost fields
  * 04/28/25 - Added indexing for better query performance
+ * 05/13/25 - Added text and dietary restriction indexes for search
  *
  */
 const mongoose = require('mongoose');
@@ -82,6 +83,13 @@ RecipeSchema.index({ 'dietaryRestrictions.vegetarian': 1 });
 RecipeSchema.index({ createdBy: 1 });
 RecipeSchema.index({ estimatedCost: 1 });
 RecipeSchema.index({ prepTime: 1 });
+
+// Search indexes
+RecipeSchema.index({ title: 'text', description: 'text' });
+RecipeSchema.index({ 'dietaryRestrictions.vegan': 1 });
+RecipeSchema.index({ 'dietaryRestrictions.glutenFree': 1 });
+RecipeSchema.index({ 'dietaryRestrictions.dairyFree': 1 });
+RecipeSchema.index({ 'dietaryRestrictions.nutFree': 1 });
 
 /**
  *

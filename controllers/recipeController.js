@@ -1,3 +1,11 @@
+/**
+ *
+ * @author - Emma Wright, Adrian Aquino
+ * @file recipeController.js - Recipe search function
+ *
+ * 5/13/25 - Added search function
+ *
+ */
 
 //creating a recipe (emma)
 
@@ -114,5 +122,32 @@ exports.updateRecipe = async (req, res, next) => {
     res.redirect('/user/profile');
   } catch (err) {
     next(err);
+  }
+};
+
+
+//added by Adrian Aquino
+
+// Search recipes
+exports.searchRecipes = async (req, res, next) => {
+  try {
+    const query = req.query.q;
+
+    if (!query) {
+      return res.json({ recipes: [] });
+    }
+
+    // Find matching recipes
+    const recipes = await Recipe.find({
+      $or: [
+        { title: { $regex: query, $options: 'i' } },
+        { description: { $regex: query, $options: 'i' } }
+      ]
+    }).limit(10);
+
+    res.json({ recipes });
+  } catch (err) {
+    console.error('Error searching recipes:', err);
+    res.status(500).json({ error: 'Failed to search recipes' });
   }
 };
