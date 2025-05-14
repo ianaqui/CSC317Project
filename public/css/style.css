@@ -598,6 +598,7 @@ input:focus {
   box-shadow: var(--shadow);
   padding: 2rem;
   margin-bottom: 2rem;
+  margin-top: -2rem;
   margin: 12rem auto 3rem auto;
 }
 
@@ -641,10 +642,10 @@ input:focus {
 }
 
 .info-item {
-  padding: 1rem 0;
+  padding: 1rem 1rem;
   border-bottom: 1px solid var(--border-color);
   display: flex;
-  justify-content: space-between;
+  justify-content: left;
 }
 
 .info-item:last-child {
@@ -661,6 +662,7 @@ input:focus {
   border-radius: 8px;
   box-shadow: var(--shadow);
   padding: 2rem;
+  margin: 2rem;
 }
 
 .profile-section h3, .settings-section h3 {
