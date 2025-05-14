@@ -3,7 +3,7 @@
 * @author - Emma Wright, Adrian Aquino
 * @file user-recipes.ejs - View template for user recipes
 *
-* 5/14/25 - Modified by Adrian Aquino, updated to render HTML instructions properly
+* 5/14/25 - Modified by Adrian Aquino, added recipe deletion button, updated to render HTML instructions properly
 *
 */
 
@@ -11,65 +11,64 @@
 
 <%- include('../partials/header') %>
 
-  <div class="user-recipe-detail">
-    <h1>
-      <%= recipe.title %>
-    </h1>
-    <p><strong>Description:</strong>
-      <%= recipe.description %>
-    </p>
+<div class="user-recipe-detail">
+  <h1>
+    <%= recipe.title %>
+  </h1>
+  <p><strong>Description:</strong>
+    <%= recipe.description %>
+  </p>
 
-    <h2>Ingredients</h2>
-    <ul>
-      <% recipe.ingredients.forEach(ing=> { %>
-        <li>
-          <%= ing.quantity %> - <%= ing.name %>
-        </li>
-        <% }) %>
-    </ul>
+  <h2>Ingredients</h2>
+  <ul>
+    <% recipe.ingredients.forEach(ing=> { %>
+      <li>
+        <%= ing.quantity %> - <%= ing.name %>
+      </li>
+    <% }) %>
+  </ul>
 
-    <h2>Instructions</h2>
-    <ol>
-      <% recipe.instructions.forEach(step=> { %>
-        <li><%- step %></li>
-      <% }) %>
-    </ol>
+  <h2>Instructions</h2>
+  <ol>
+    <% recipe.instructions.forEach(step=> { %>
+      <li><%= step.replace(/<\/?p>/g, '') %></li>
+    <% }) %>
+  </ol>
 
-    <p><strong>Prep Time:</strong>
-      <%= recipe.prepTime %> minutes
-    </p>
-    <p><strong>Cook Time:</strong>
-      <%= recipe.cookTime %> minutes
-    </p>
-    <p><strong>Total Time:</strong>
-      <%= recipe.prepTime + recipe.cookTime %> minutes
-    </p>
-    <p><strong>Cost:</strong> $<%= recipe.estimatedCost.toFixed(2) %>
-    </p>
-    <p><strong>Category:</strong>
-      <%= recipe.category %>
-    </p>
+  <p><strong>Prep Time:</strong>
+    <%= recipe.prepTime %> minutes
+  </p>
+  <p><strong>Cook Time:</strong>
+    <%= recipe.cookTime %> minutes
+  </p>
+  <p><strong>Total Time:</strong>
+    <%= recipe.prepTime + recipe.cookTime %> minutes
+  </p>
+  <p><strong>Cost:</strong> $<%= recipe.estimatedCost.toFixed(2) %>
+  </p>
+  <p><strong>Category:</strong>
+    <%= recipe.category %>
+  </p>
 
-    <p><strong>Dietary Tags:</strong>
-      <% for (const tag in recipe.dietaryRestrictions) { %>
-        <% if (recipe.dietaryRestrictions[tag]) { %>
-          <span>
+  <p><strong>Dietary Tags:</strong>
+    <% for (const tag in recipe.dietaryRestrictions) { %>
+      <% if (recipe.dietaryRestrictions[tag]) { %>
+        <span>
             <%= tag %>
           </span>
-          <% } %>
-            <% } %>
-    </p>
+      <% } %>
+    <% } %>
+  </p>
 
-    <a href="/user/recipes/<%= recipe._id %>/edit" class="btn">✏️ Edit Recipe</a>
+  <a href="/user/recipes/<%= recipe._id %>/edit" class="btn">✏️ Edit Recipe</a>
 
-    <!-- Added by Adrian Aquino - 5/14/25 - Recipe deletion button -->
-    <form action="/recipe/<%= recipe._id %>?_method=DELETE" method="POST" onsubmit="return confirm('Are you sure you want to delete this recipe? This cannot be undone.');">
-      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-      <button type="submit" class="btn">Delete Recipe</button>
-    </form>
+  <!-- Recipe deletion button -->
+  <form action="/recipe/<%= recipe._id %>?_method=DELETE" method="POST" onsubmit="return confirm('Are you sure you want to delete this recipe? This cannot be undone.');">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+    <button type="submit" class="btn">Delete Recipe</button>
+  </form>
 
-    <a href="/user/profile" class="btn">← Back to Profile</a>
-  </div>
+  <a href="/user/profile" class="btn">← Back to Profile</a>
+</div>
 
-  <%- include('../partials/footer') %>
-
+<%- include('../partials/footer') %>
