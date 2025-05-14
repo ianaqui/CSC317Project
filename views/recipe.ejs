@@ -1,9 +1,13 @@
-<%# 
- * Recipe Detail Page Template
- * Author: Lakshya
- * Purpose: Displays detailed information about a recipe including image, ingredients,
- *          instructions, and video tutorial. Uses TheMealDB API data.
-%>
+
+<!--
+ *
+ * @author - Lakshya, Adrian Aquino
+ * @file recipe.ejs - Displays detailed information about a recipe including image, ingredients,
+ *                    instructions, and video tutorial. Uses TheMealDB API data.
+ *
+ * 5/14/25 - Modified by Adrian Aquino, updated to properly display MongoDB recipe format
+ *
+ -->
 
 <%- include('./partials/header') %>
 
@@ -12,22 +16,40 @@
     <div class="recipe-detail">
       <div class="recipe-header">
         <div class="recipe-image">
-          <img src="<%= recipe.strMealThumb %>" alt="<%= recipe.strMeal %>">
+          <% if (recipe.hasImage) { %>
+            <img src="/recipe/<%= recipe._id %>/image" alt="<%= recipe.title %>">
+          <% } else { %>
+            <img src="/images/recipe-placeholder.jpg" alt="<%= recipe.title %>">
+          <% } %>
         </div>
         <div class="recipe-info">
-          <h1><%= recipe.strMeal %></h1>
+          <h1><%= recipe.title %></h1>
           <div class="recipe-meta">
-            <span class="category"><%= recipe.strCategory %></span>
-            <span class="area"><%= recipe.strArea %></span>
-            <span class="price">$<%= price %></span>
+            <span class="category"><%= recipe.category %></span>
+            <span class="prep-time">Prep: <%= recipe.prepTime %> mins</span>
+            <span class="cook-time">Cook: <%= recipe.cookTime %> mins</span>
+            <span class="price">$<%= recipe.estimatedCost.toFixed(2) %></span>
           </div>
-          <% if (recipe.strTags) { %>
-            <div class="recipe-tags">
-              <% recipe.strTags.split(',').forEach(tag => { %>
-                <span class="tag"><%= tag.trim() %></span>
-              <% }); %>
-            </div>
-          <% } %>
+          <div class="recipe-tags">
+            <% if (recipe.dietaryRestrictions) { %>
+              <% if (recipe.dietaryRestrictions.vegetarian) { %>
+                <span class="tag">Vegetarian</span>
+              <% } %>
+              <% if (recipe.dietaryRestrictions.vegan) { %>
+                <span class="tag">Vegan</span>
+              <% } %>
+              <% if (recipe.dietaryRestrictions.glutenFree) { %>
+                <span class="tag">Gluten-Free</span>
+              <% } %>
+              <% if (recipe.dietaryRestrictions.dairyFree) { %>
+                <span class="tag">Dairy-Free</span>
+              <% } %>
+              <% if (recipe.dietaryRestrictions.nutFree) { %>
+                <span class="tag">Nut-Free</span>
+              <% } %>
+            <% } %>
+          </div>
+          <p class="recipe-description"><%= recipe.description %></p>
         </div>
       </div>
 
@@ -35,42 +57,26 @@
         <div class="recipe-ingredients">
           <h2>Ingredients</h2>
           <ul>
-            <% for(let i = 1; i <= 20; i++) { %>
-              <% if(recipe[`strIngredient${i}`] && recipe[`strIngredient${i}`].trim() !== '') { %>
-                <li>
-                  <span class="measure"><%= recipe[`strMeasure${i}`] %></span>
-                  <span class="ingredient"><%= recipe[`strIngredient${i}`] %></span>
-                </li>
-              <% } %>
-            <% } %>
+            <% recipe.ingredients.forEach(ingredient => { %>
+              <li>
+                <span class="measure"><%= ingredient.quantity || '' %></span>
+                <span class="ingredient"><%= ingredient.name %></span>
+              </li>
+            <% }) %>
           </ul>
         </div>
 
         <div class="recipe-instructions">
           <h2>Instructions</h2>
           <div class="instructions-text">
-            <%= recipe.strInstructions.split('\n').map(paragraph => 
-              paragraph.trim() ? `<p>${paragraph}</p>` : ''
-            ).join('') %>
+            <% recipe.instructions.forEach((instruction, index) => { %>
+              <p><%= (index + 1) %>. <%= instruction %></p>
+            <% }) %>
           </div>
         </div>
-
-        <% if (recipe.strYoutube) { %>
-          <div class="recipe-video">
-            <h2>Video Tutorial</h2>
-            <div class="video-container">
-              <iframe 
-                src="<%= recipe.strYoutube.replace('watch?v=', 'embed/') %>" 
-                frameborder="0" 
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                allowfullscreen>
-              </iframe>
-            </div>
-          </div>
-        <% } %>
       </div>
     </div>
   </div>
 </div>
 
-<%- include('./partials/footer') %> 
+<%- include('./partials/footer') %>
