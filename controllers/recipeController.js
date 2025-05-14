@@ -4,13 +4,94 @@
  * @file recipeController.js - Recipe controller functions
  *
  * 5/13/25 - Modified by Adrian Aquino, added search function
- * 5/14/25 - Modified by Adrian Aquino, added recipe deletion
- * 5/14/25 - Modified by Adrian Aquino, added image upload functionality
+ * 5/14/25 - Modified by Adrian Aquino, added recipe deletion,
+ * added image upload functionality, separated external API and MongoDB methods
+ *
  */
 
 const Recipe = require('../models/Recipe');
 const RecipeImage = require('../models/RecipeImage');
 const upload = require('../middlewares/upload');
+
+/**
+ *
+ * getExternalRecipe
+ *
+ * Fetches recipe data from TheMealDB API and renders external recipe page
+ *
+ * @param    req    HTTP request object
+ * @param    res    HTTP response object
+ * @param    next   Next middleware function
+ *
+ */
+exports.getExternalRecipe = async (req, res, next) => {
+  try {
+    const response = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${req.params.id}`);
+    const data = await response.json();
+
+    if (!data.meals || data.meals.length === 0) {
+      return res.status(404).render('error', {
+        message: 'Recipe not found',
+        error: { status: 404 },
+        title: 'Recipe Not Found'
+      });
+    }
+
+    // Generate a random price between $5 and $25
+    const price = (Math.random() * 20 + 5).toFixed(2);
+
+    res.render('recipe-external', {
+      recipe: data.meals[0],
+      price: price,
+      title: data.meals[0].strMeal
+    });
+  } catch (error) {
+    console.error('Error fetching external recipe:', error);
+    res.status(500).render('error', {
+      message: 'Error loading recipe',
+      error: { status: 500 },
+      title: 'Error'
+    });
+  }
+};
+
+/**
+ *
+ * getUserRecipe
+ *
+ * Fetches recipe data from MongoDB and renders user recipe page
+ *
+ * @param    req    HTTP request object
+ * @param    res    HTTP response object
+ * @param    next   Next middleware function
+ *
+ */
+exports.getUserRecipe = async (req, res, next) => {
+  try {
+    const recipe = await Recipe.findById(req.params.id);
+
+    if (!recipe) {
+      return res.status(404).render('error', {
+        message: 'Recipe not found',
+        error: { status: 404 },
+        title: 'Recipe Not Found'
+      });
+    }
+
+    res.render('recipe', {
+      recipe: recipe,
+      price: recipe.estimatedCost.toFixed(2),
+      title: recipe.title
+    });
+  } catch (error) {
+    console.error('Error fetching recipe:', error);
+    res.status(500).render('error', {
+      message: 'Error loading recipe',
+      error: { status: 500 },
+      title: 'Error'
+    });
+  }
+};
 
 /**
  *
@@ -247,9 +328,17 @@ exports.updateRecipe = async (req, res, next) => {
   }
 };
 
-//added by Adrian Aquino
-
-// Search recipes
+/**
+ *
+ * searchRecipes
+ *
+ * Searches recipes based on a query string
+ *
+ * @param    req    HTTP request object
+ * @param    res    HTTP response object
+ * @param    next   Next middleware function
+ *
+ */
 exports.searchRecipes = async (req, res, next) => {
   try {
     const query = req.query.q;
@@ -273,6 +362,17 @@ exports.searchRecipes = async (req, res, next) => {
   }
 };
 
+/**
+ *
+ * deleteRecipe
+ *
+ * Deletes a recipe and its associated image
+ *
+ * @param    req    HTTP request object
+ * @param    res    HTTP response object
+ * @param    next   Next middleware function
+ *
+ */
 exports.deleteRecipe = async (req, res, next) => {
   try {
     const recipe = await Recipe.findById(req.params.id);
