@@ -1,8 +1,11 @@
 /**
  * Pantry Section Functionality
- * Author: Lakshya
+ * Author: Lakshya, Adrian Aquino
  * Purpose: Handles recipe filtering, pagination, and dynamic content loading
  *          for the pantry section. Integrates with TheMealDB API.
+ *
+ * 5/14/25 - Modified by Adrian Aquino, updated recipe links
+ *
  */
 
 let currentPage = 1;
@@ -107,12 +110,13 @@ function changePage(newPage) {
     window.scrollTo({ top: document.getElementById('filtered-recipes-grid').offsetTop - 100, behavior: 'smooth' });
 }
 
+// Updated by Adrian Aquino
 function createRecipeCard(recipe) {
     const price = (Math.random() * 20 + 5).toFixed(2);
     const tags = recipe.strTags ? recipe.strTags.split(',').slice(0, 2) : [];
-    
+
     return `
-        <a href="/recipe/${recipe.idMeal}" class="recipe-card">
+        <a href="/recipe/external/${recipe.idMeal}" class="recipe-card">
             <div class="recipe-image">
                 <img src="${recipe.strMealThumb}" alt="${recipe.strMeal}">
             </div>
