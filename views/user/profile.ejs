@@ -1,3 +1,12 @@
+<!--
+ *
+ * @author - Emma Wright, Adrian Aquino
+ * @file profile.ejs - User profile page showing account details and recipes
+ *
+ * 5/14/25 - Modified by Adrian Aquino, removed placeholder content section
+ *
+ -->
+
 <%- include('../partials/header') %>
 
 <div class="container" style="margin-top: 60px;">
@@ -9,19 +18,19 @@
         <div class="profile-avatar">
           <% if (user.hasProfileImage) { %>
             <img src="/user/profile-image" alt="Profile picture">
-            <% } else { %>
-              <!-- Display first letter of username as avatar -->
-              <span>
+          <% } else { %>
+            <!-- Display first letter of username as avatar -->
+            <span>
                 <%= user.username.charAt(0) %>
               </span>
-              <% } %>
+          <% } %>
         </div>
         <div class="profile-title">
           <h2>
             <%= user.username %>
           </h2>
           <p class="subtitle">Member since <%= typeof user.createdAt !=='undefined' ?
-              helpers.formatDate(user.createdAt, 'DD/MM/YYYY') : 'N/A' %>
+                    helpers.formatDate(user.createdAt, 'DD/MM/YYYY') : 'N/A' %>
           </p>
         </div>
       </div>
@@ -50,27 +59,21 @@
 
       <% if (recipes.length===0) { %>
         <p>You haven't added any recipes yet.</p>
-        <% } else { %>
-          <ul class="recipe-list">
-            <% recipes.forEach(recipe=> { %>
-              <li>
-                <strong>
-                  <%= recipe.title %>
-                </strong><br>
-                <span>
+      <% } else { %>
+        <ul class="recipe-list">
+          <% recipes.forEach(recipe=> { %>
+            <li>
+              <strong>
+                <%= recipe.title %>
+              </strong><br>
+              <span>
                   <%= recipe.description.substring(0, 100) %>...
                 </span><br>
-                <a href="/user/recipes/<%= recipe._id %>">View Recipe</a>
-              </li>
-              <% }) %>
-          </ul>
-          <% } %>
-    </div>
-
-    <div class="profile-section">
-      <h3>Protected Content</h3>
-      <p>This page is only accessible to authenticated users. You're seeing this because you're logged in!</p>
-      <p>This is where your application would display user-specific content and functionality.</p>
+              <a href="/user/recipes/<%= recipe._id %>">View Recipe</a>
+            </li>
+          <% }) %>
+        </ul>
+      <% } %>
     </div>
 
     <div class="profile-section">
