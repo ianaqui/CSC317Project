@@ -133,12 +133,7 @@ app.use(session(sessionConfig));
 // CSRF protection disabled temporarily
 console.log('CSRF protection is currently disabled');
 
-// Set a dummy CSRF token for templates
-app.use((req, res, next) => {
-  // Provide a dummy token so templates don't break
-  res.locals.csrfToken = 'csrf-protection-disabled';
-  next();
-});
+/// Set a dummy CSRF token for templates
 
 // Our custom locals middleware
 app.use(setLocals);
