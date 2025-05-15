@@ -4,8 +4,7 @@
  * @file recipeController.js - Recipe controller functions
  *
  * 5/13/25 - Modified by Adrian Aquino, added search function
- * 5/14/25 - Modified by Adrian Aquino, added recipe deletion,
- * added image upload functionality, separated external API and MongoDB methods
+ * 5/14/25 - Modified by Adrian Aquino, updated to search both MongoDB and TheMealDB API
  *
  */
 
@@ -334,7 +333,7 @@ exports.updateRecipe = async (req, res, next) => {
  *
  * searchRecipes
  *
- * Searches recipes based on a query string
+ * Searches recipes from both MongoDB database and TheMealDB API
  *
  * @param    req    HTTP request object
  * @param    res    HTTP response object
@@ -349,15 +348,42 @@ exports.searchRecipes = async (req, res, next) => {
       return res.json({ recipes: [] });
     }
 
-    // Find matching recipes
-    const recipes = await Recipe.find({
+    // Step 1: Search MongoDB recipes
+    const mongoRecipes = await Recipe.find({
       $or: [
         { title: { $regex: query, $options: 'i' } },
         { description: { $regex: query, $options: 'i' } }
       ]
-    }).limit(10);
+    }).limit(5);
 
-    res.json({ recipes });
+    // Step 2: Search TheMealDB API
+    const mealDbResults = [];
+    try {
+      const mealResponse = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${query}`);
+      const mealData = await mealResponse.json();
+
+      if (mealData.meals && mealData.meals.length > 0) {
+        // Take only first 5 results
+        mealDbResults.push(...mealData.meals.slice(0, 5));
+      }
+    } catch (err) {
+      console.log('Error fetching TheMealDB results:', err);
+      // Continue with MongoDB results if TheMealDB fails
+    }
+
+    // Step 3: Format the results for the frontend
+    // Transform external recipes to match our format
+    const formattedExternalRecipes = mealDbResults.map(meal => ({
+      _id: meal.idMeal,
+      title: meal.strMeal,
+      isExternal: true,
+      externalThumbnail: meal.strMealThumb
+    }));
+
+    // Combine both types of recipes
+    const allRecipes = [...mongoRecipes, ...formattedExternalRecipes];
+
+    res.json({ recipes: allRecipes });
   } catch (err) {
     console.error('Error searching recipes:', err);
     res.status(500).json({ error: 'Failed to search recipes' });
@@ -378,11 +404,11 @@ exports.searchRecipes = async (req, res, next) => {
 exports.deleteRecipe = async (req, res, next) => {
   try {
     const recipe = await Recipe.findById(req.params.id);
-    console.log('DELETE method received for ID:', req.params.id);
+
     // Check if recipe exists and belongs to the current user
-    // if (!recipe || recipe.createdBy.toString() !== req.session.user.id) {
-    //   return res.status(403).send('Access denied: You cannot delete recipes you did not create');
-    // }
+    if (!recipe || recipe.createdBy.toString() !== req.session.user.id) {
+      return res.status(403).send('Access denied: You cannot delete recipes you did not create');
+    }
 
     // Delete the recipe
     await Recipe.findByIdAndDelete(req.params.id);
