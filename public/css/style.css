@@ -556,12 +556,27 @@ input:focus {
 /* 
  * About Page 
  */
-.about-section, .tech-stack {
+.about-section{
+  max-width: 800px;
+  margin-top: 6rem;
   background-color: var(--white);
   padding: 2rem;
-  border-radius: 8px;
+  border-radius: 16px;
   box-shadow: var(--shadow);
+  margin-left: auto;
+  margin-right: auto;
+} 
+
+.tech-stack {
+  max-width: 800px;
+  background-color: var(--white);
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  margin-top: 2rem;
   margin-bottom: 2rem;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .about-section h1 {
@@ -594,10 +609,9 @@ input:focus {
 
 .profile-card {
   background-color: var(--white);
-  border-radius: 8px;
+  border-radius: 16px;
   box-shadow: var(--shadow);
   padding: 2rem;
-  margin-bottom: 2rem;
   margin: 12rem auto 3rem auto;
 }
 
@@ -641,10 +655,10 @@ input:focus {
 }
 
 .info-item {
-  padding: 1rem 0;
+  padding: 1rem 1rem;
   border-bottom: 1px solid var(--border-color);
   display: flex;
-  justify-content: space-between;
+  justify-content: left;
 }
 
 .info-item:last-child {
@@ -658,9 +672,10 @@ input:focus {
 
 .profile-section, .settings-section {
   background-color: var(--white);
-  border-radius: 8px;
+  border-radius: 16px;
   box-shadow: var(--shadow);
   padding: 2rem;
+  margin: 2rem;
 }
 
 .profile-section h3, .settings-section h3 {
