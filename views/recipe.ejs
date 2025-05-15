@@ -1,82 +1,82 @@
-
 <!--
  *
  * @author - Lakshya, Adrian Aquino
  * @file recipe.ejs - Displays detailed information about a recipe including image, ingredients,
  *                    instructions, and video tutorial. Uses TheMealDB API data.
  *
- * 5/14/25 - Modified by Adrian Aquino, updated to properly display MongoDB recipe format
+ * 5/14/25 - Modified by Adrian Aquino, updated to properly display MongoDB recipe format,
+ *           fixed instructions rendering by using correct property
  *
  -->
 
 <%- include('./partials/header') %>
 
 <div class="recipe-detail-section">
-  <div class="container">
-    <div class="recipe-detail">
-      <div class="recipe-header">
-        <div class="recipe-image">
-          <% if (recipe.hasImage) { %>
-            <img src="/recipe/<%= recipe._id %>/image" alt="<%= recipe.title %>">
-          <% } else { %>
-            <img src="/images/recipe-placeholder.jpg" alt="<%= recipe.title %>">
-          <% } %>
-        </div>
-        <div class="recipe-info">
-          <h1><%= recipe.title %></h1>
-          <div class="recipe-meta">
-            <span class="category"><%= recipe.category %></span>
-            <span class="prep-time">Prep: <%= recipe.prepTime %> mins</span>
-            <span class="cook-time">Cook: <%= recipe.cookTime %> mins</span>
-            <span class="price">$<%= recipe.estimatedCost.toFixed(2) %></span>
-          </div>
-          <div class="recipe-tags">
-            <% if (recipe.dietaryRestrictions) { %>
-              <% if (recipe.dietaryRestrictions.vegetarian) { %>
-                <span class="tag">Vegetarian</span>
-              <% } %>
-              <% if (recipe.dietaryRestrictions.vegan) { %>
-                <span class="tag">Vegan</span>
-              <% } %>
-              <% if (recipe.dietaryRestrictions.glutenFree) { %>
-                <span class="tag">Gluten-Free</span>
-              <% } %>
-              <% if (recipe.dietaryRestrictions.dairyFree) { %>
-                <span class="tag">Dairy-Free</span>
-              <% } %>
-              <% if (recipe.dietaryRestrictions.nutFree) { %>
-                <span class="tag">Nut-Free</span>
-              <% } %>
-            <% } %>
-          </div>
-          <p class="recipe-description"><%= recipe.description %></p>
-        </div>
-      </div>
+    <div class="container">
+        <div class="recipe-detail">
+            <div class="recipe-header">
+                <div class="recipe-image">
+                    <% if (recipe.hasImage) { %>
+                        <img src="/recipe/<%= recipe._id %>/image" alt="<%= recipe.title %>">
+                    <% } else { %>
+                        <img src="/images/recipe-placeholder.jpg" alt="<%= recipe.title %>">
+                    <% } %>
+                </div>
+                <div class="recipe-info">
+                    <h1><%= recipe.title %></h1>
+                    <div class="recipe-meta">
+                        <span class="category"><%= recipe.category %></span>
+                        <span class="prep-time">Prep: <%= recipe.prepTime %> mins</span>
+                        <span class="cook-time">Cook: <%= recipe.cookTime %> mins</span>
+                        <span class="price">$<%= recipe.estimatedCost.toFixed(2) %></span>
+                    </div>
+                    <div class="recipe-tags">
+                        <% if (recipe.dietaryRestrictions) { %>
+                            <% if (recipe.dietaryRestrictions.vegetarian) { %>
+                                <span class="tag">Vegetarian</span>
+                            <% } %>
+                            <% if (recipe.dietaryRestrictions.vegan) { %>
+                                <span class="tag">Vegan</span>
+                            <% } %>
+                            <% if (recipe.dietaryRestrictions.glutenFree) { %>
+                                <span class="tag">Gluten-Free</span>
+                            <% } %>
+                            <% if (recipe.dietaryRestrictions.dairyFree) { %>
+                                <span class="tag">Dairy-Free</span>
+                            <% } %>
+                            <% if (recipe.dietaryRestrictions.nutFree) { %>
+                                <span class="tag">Nut-Free</span>
+                            <% } %>
+                        <% } %>
+                    </div>
+                    <p class="recipe-description"><%= recipe.description %></p>
+                </div>
+            </div>
 
-      <div class="recipe-content">
-        <div class="recipe-ingredients">
-          <h2>Ingredients</h2>
-          <ul>
-            <% recipe.ingredients.forEach(ingredient => { %>
-              <li>
-                <span class="measure"><%= ingredient.quantity || '' %></span>
-                <span class="ingredient"><%= ingredient.name %></span>
-              </li>
-            <% }) %>
-          </ul>
-        </div>
+            <div class="recipe-content">
+                <div class="recipe-ingredients">
+                    <h2>Ingredients</h2>
+                    <ul>
+                        <% recipe.ingredients.forEach(ingredient => { %>
+                            <li>
+                                <span class="measure"><%= ingredient.quantity || '' %></span>
+                                <span class="ingredient"><%= ingredient.name %></span>
+                            </li>
+                        <% }) %>
+                    </ul>
+                </div>
 
-        <div class="recipe-instructions">
-          <h2>Instructions</h2>
-          <div class="instructions-text">
-            <%- recipe.strInstructions.split('\n').map(paragraph => 
-              paragraph.trim() ? `<p>${paragraph}</p>` : ''
-            ).join('') %>
-          </div>
+                <div class="recipe-instructions">
+                    <h2>Instructions</h2>
+                    <div class="instructions-text">
+                        <%- recipe.instructions.map(paragraph =>
+                                paragraph.trim() ? `<p>${paragraph}</p>` : ''
+                        ).join('') %>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 </div>
 
 <%- include('./partials/footer') %>
