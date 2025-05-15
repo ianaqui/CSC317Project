@@ -3,8 +3,7 @@
  * @author - Emma Wright, Adrian Aquino
  * @file recipe-form.ejs - Form template for recipe creation/editing
  *
- * 5/14/25 - Modified by Adrian Aquino, added image upload functionality, fixed duplicate footer include,
- *           fixed method override format for proper form submission
+ * 5/14/25 - Modified by Adrian Aquino, added image upload functionality, fixed duplicate footer include
  *
  -->
 
@@ -15,11 +14,7 @@
   <h1>
     <%= recipe ? "Edit Recipe" : "Create Recipe" %>
   </h1>
-
-  <!-- updated by Adrian -->
-  <form action="<%= recipe ? '/recipe/' + recipe._id : '/recipe' %>" method="POST" enctype="multipart/form-data">
-    <input type="hidden" name="_method" value="<%= recipe ? 'PUT' : 'POST' %>">
-    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+  <form action="<%= recipe ? '/recipe/' + recipe._id + '?_method=PUT' : '/recipe' %>" method="POST" enctype="multipart/form-data">
 
     <!---title-->
     <label for="title">Title</label>
