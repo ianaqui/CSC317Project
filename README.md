@@ -49,7 +49,6 @@ Authenticated users can:
 * Edit their own recipes
 * Delete their own recipes
 * View all recipes in the system
-* Save favorite recipes
 
 ## Complex Feature: Recipe Filtering System
 Our application includes a sophisticated filtering system that allows users to combine multiple criteria (cost, time, dietary restrictions, and meal type) to find exactly the recipes they need. This feature includes real-time updates of search results as filters are applied, creating a seamless user experience.
@@ -116,7 +115,6 @@ Both types of recipes are presented with consistent UI styling. External recipes
   * bcrypt - Password encryption
   * express-session - Session management
   * multer - File upload handling
-  * csurf - CSRF protection
   * method-override - RESTful methods
   * TheMealDB API - External recipe data source
 * Inspired by recipe site made by SparkPeople
