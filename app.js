@@ -16,6 +16,7 @@
 require('dotenv').config();
 
 // Core dependencies
+const methodOverride = require('method-override');
 const express = require('express');
 const path = require('path');
 const session = require('express-session');
@@ -64,11 +65,10 @@ if (process.env.MONGODB_URI) {
 
 // Configure Express
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 //added by emma - for put
-const methodOverride = require('method-override');
+app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 
 // Set up EJS view engine
@@ -85,6 +85,11 @@ app.locals.helpers = {
     return d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
   }
 };
+
+app.use((req, res, next) => {
+  console.log('Method after override:', req.method);
+  next();
+});
 
 // Session configuration
 let sessionConfig = {
