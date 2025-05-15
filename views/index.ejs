@@ -1,10 +1,19 @@
 <%- include('./partials/header') %>
 
+<!--
+ *
+ * @author - Lakshya, Adrian Aquino
+ * @file index.ejs - Main homepage view
+ *
+ * 5/14/25 - Modified by Adrian Aquino, fixed recipe card links to use correct external route
+ *
+ -->
+
 <div class="welcome-section">
   <h1><%= message %></h1>
   <p>Create, discover, and share recipes 🍽️</p>
   <p>Filter recipes by budget, prep time, and dietry needs.</p>
-  
+
   <% if (isAuthenticated) { %>
     <div class="action-buttons">
       <a href="/user/profile" class="btn primary-btn">View Profile</a>
@@ -123,11 +132,17 @@
 <%- include('./partials/footer') %>
 
 <script>
-  // Fetch featured recipes from TheMealDB
+  /**
+   *
+   * fetchFeaturedRecipes
+   *
+   * Fetches random recipes from TheMealDB API and displays them in the grid
+   *
+   */
   async function fetchFeaturedRecipes() {
     const recipesGrid = document.getElementById('recipes-grid');
     const loadingSpinner = document.getElementById('loading-spinner');
-    
+
     try {
       // Fetch 8 random recipes
       const recipes = [];
@@ -136,10 +151,10 @@
         const data = await response.json();
         recipes.push(data.meals[0]);
       }
-      
+
       // Clear loading spinner
       loadingSpinner.style.display = 'none';
-      
+
       // Populate the grid with recipe cards
       recipesGrid.innerHTML = recipes.map(recipe => createRecipeCard(recipe)).join('');
     } catch (error) {
@@ -149,13 +164,23 @@
     }
   }
 
+  /**
+   *
+   * createRecipeCard
+   *
+   * Creates HTML for a recipe card with proper external route
+   *
+   * @param    meal    Recipe data from TheMealDB API
+   *
+   * @return   HTML string for recipe card
+   */
   function createRecipeCard(meal) {
     // Generate a random price between $5 and $25
     const price = (Math.random() * 20 + 5).toFixed(2);
     const tags = meal.strTags ? meal.strTags.split(',').slice(0, 2) : [];
-    
+
     return `
-      <a href="/recipe/${meal.idMeal}" class="recipe-card">
+      <a href="/recipe/external/${meal.idMeal}" class="recipe-card">
         <div class="recipe-image">
           <img src="${meal.strMealThumb}" alt="${meal.strMeal}">
         </div>
@@ -191,20 +216,20 @@
       displayPantryRecipes();
     } catch (error) {
       console.error('Error fetching recipes:', error);
-      document.getElementById('filtered-recipes-grid').innerHTML = 
-        '<p class="error-message">Failed to load recipes. Please try again later.</p>';
+      document.getElementById('filtered-recipes-grid').innerHTML =
+              '<p class="error-message">Failed to load recipes. Please try again later.</p>';
     }
   }
 
   function applyFilters() {
     const minPrice = parseFloat(document.getElementById('min-price').value) || 0;
     const maxPrice = parseFloat(document.getElementById('max-price').value) || 100;
-    
+
     const prepTimeFilters = Array.from(document.querySelectorAll('input[name="prep-time"]:checked'))
-      .map(input => input.value);
-    
+            .map(input => input.value);
+
     const dietaryFilters = Array.from(document.querySelectorAll('input[name="dietary"]:checked'))
-      .map(input => input.value);
+            .map(input => input.value);
 
     // Filter recipes
     filteredRecipes = allRecipes.filter(recipe => {
@@ -232,17 +257,17 @@
     const startIndex = (currentPage - 1) * recipesPerPage;
     const endIndex = startIndex + recipesPerPage;
     const recipesToShow = filteredRecipes.slice(startIndex, endIndex);
-    
+
     const recipesGrid = document.getElementById('filtered-recipes-grid');
     recipesGrid.innerHTML = recipesToShow.map(recipe => createRecipeCard(recipe)).join('');
-    
+
     updatePagination();
   }
 
   function updatePagination() {
     const totalPages = Math.ceil(filteredRecipes.length / recipesPerPage);
     const paginationContainer = document.getElementById('pagination');
-    
+
     let paginationHTML = `
       <div class="pagination">
         <button class="pagination-btn" 
@@ -258,7 +283,7 @@
         </button>
       </div>
     `;
-    
+
     paginationContainer.innerHTML = paginationHTML;
   }
 

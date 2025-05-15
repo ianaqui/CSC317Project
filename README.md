@@ -1,6 +1,6 @@
 # Recipe Sharing Platform
 
-A web application that allows users to create, share, and discover recipes with detailed time and cost information. Built with Express.js, MongoDB, and JavaScript. 
+A web application that allows users to create, share, and discover recipes with detailed time and cost information.
 
 Visit our live site: [https://csc317-group-k.onrender.com](https://csc317-group-k.onrender.com)
 
@@ -88,7 +88,35 @@ Our application includes a sophisticated filtering system that allows users to c
   * Develop responsive menu and user interface behaviors
   * Connect frontend forms with backend API endpoints
 
+## API Integration
+
+This application combines two sources of recipe data:
+
+### TheMealDB API (External)
+- Random recipes displayed on the homepage
+- Recipes displayed with /recipe/external/:id route
+- Used primarily for inspiration and featured recipes
+- Read-only access, cannot be edited or deleted
+
+### MongoDB (User-created)
+- Stores recipes created by registered users
+- Recipes displayed with /recipe/:id route
+- Full CRUD functionality (Create, Read, Update, Delete)
+- Includes features like image upload and dietary restrictions
+
+Both types of recipes are presented with consistent UI styling. External recipes are read-only, while user-created recipes can be edited or deleted by their creators.
+
 ## Acknowledgments
 
-* Built with Express.js, MongoDB, and JavaScript
+* Built with:
+  * Express.js - Web application framework
+  * MongoDB with Mongoose - Database system
+  * JavaScript, HTML5, and CSS3 - Frontend development
+  * EJS - Templating engine
+  * bcrypt - Password encryption
+  * express-session - Session management
+  * multer - File upload handling
+  * csurf - CSRF protection
+  * method-override - RESTful methods
+  * TheMealDB API - External recipe data source
 * Inspired by recipe site made by SparkPeople

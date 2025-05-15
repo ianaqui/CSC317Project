@@ -1,10 +1,11 @@
 /**
- * Search Functionality
- * Author: Lakshya, Adrian Aquino
- * Purpose: Handles real-time recipe search with debouncing, integrates with MongoDB API,
- *          and manages search results display and interaction.
+ *
+ * @author - Lakshya, Adrian Aquino
+ * @file search.js - Real-time search functionality
  *
  * 5/13/25 - Modified by Adrian Aquino, updated to use MongoDB API
+ * 5/14/25 - Modified by Adrian Aquino, fixed image handling for consistency
+ *
  */
 document.addEventListener('DOMContentLoaded', () => {
   const searchInput = document.getElementById('search-input');
@@ -35,12 +36,12 @@ document.addEventListener('DOMContentLoaded', () => {
         // Show only thumbnail and name
         const results = data.recipes.slice(0, 5).map(recipe => {
           // Create image URL or use placeholder
-          const imageUrl = recipe.image && recipe.image.hasImage
+          const imageUrl = recipe.hasImage
               ? `/recipe/${recipe._id}/image`
               : '/images/recipe-placeholder.jpg';
 
           return `
-          <a href="/user/recipes/${recipe._id}" class="search-result-item">
+          <a href="/recipe/${recipe._id}" class="search-result-item">
             <img src="${imageUrl}" alt="${recipe.title}">
             <h4>${recipe.title}</h4>
           </a>
