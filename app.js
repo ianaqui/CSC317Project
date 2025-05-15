@@ -144,16 +144,17 @@ try {
 app.use(session(sessionConfig));
 
 // CSRF protection
-const csrfProtection = csrf({ cookie: false });
-app.use(csrfProtection);
+//const csrfProtection = csrf({ cookie: false });
+//app.use(csrfProtection);
 
 // Set CSRF token for templates
 app.use((req, res, next) => {
-  res.locals.csrfToken = req.csrfToken();
+  res.locals.csrfToken = 'csrf-protection-disabled';
+  // res.locals.csrfToken = req.csrfToken();
   next();
 });
 
-console.log('CSRF protection is enabled');
+//console.log('CSRF protection is enabled');
 
 // Our custom locals middleware
 app.use(setLocals);
