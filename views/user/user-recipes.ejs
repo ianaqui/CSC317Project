@@ -4,7 +4,7 @@
  * @file user-recipes.ejs - View template for user recipes
  *
  * 5/14/25 - Modified by Adrian Aquino, added recipe deletion button, updated to render HTML instructions properly,
-  fixed comment style for proper HTML rendering
+  fixed comment style for proper HTML rendering, fixed method override format for proper form submission
  *
  -->
 
@@ -64,7 +64,8 @@
   <a href="/user/recipes/<%= recipe._id %>/edit" class="btn">✏️ Edit Recipe</a>
 
   <!-- Recipe deletion button -->
-  <form action="/recipe/<%= recipe._id %>?_method=DELETE" method="POST" onsubmit="return confirm('Are you sure you want to delete this recipe? This cannot be undone.');">
+  <form action="/recipe/<%= recipe._id %>" method="POST" onsubmit="return confirm('Are you sure you want to delete this recipe? This cannot be undone.');">
+    <input type="hidden" name="_method" value="DELETE">
     <input type="hidden" name="_csrf" value="<%= csrfToken %>">
     <button type="submit" class="btn">Delete Recipe</button>
   </form>
